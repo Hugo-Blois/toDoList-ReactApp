@@ -1,40 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Button from './Button'
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [age, setAge] = useState(0)
-  useEffect(() => {
-    console.log("la nouvelle valeur du compteur est: " + count)
-  }, [count]);
-  
-  function onChangeAge(e: React.ChangeEvent<HTMLInputElement>){
-    const value = Number(e.currentTarget.value)
-    if(!isNaN(value)){
-      setAge(value);
-      console.log(age);
-    }
+  const [tache, setTache] = useState<string>();
+
+  function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
+    const text = String(e.currentTarget.value);
+    if(text != '')
+      setTache(text);
   }
-  
-  function verifyAge(){
-    if(age >= 18) console.log("Vous êtes majeur")
-    else console.log("Vous êtes mineur")
+
+  function addTache(){
+    console.log(tache)
   }
 
   return (
     <>
-      <div>Compteur: {count}</div>
-      <div>
-        <Button label="+" onClick={() => 
-          setCount((count) => count + 1)}/>
-        <Button label="-" onClick={() => 
-          setCount((count) => count - 1)}/>
-        <Button label="Reset" onClick={() => 
-          setCount(0)}/>
-      </div>
-      <input type="number" placeholder='Age' value={age} onChange={ onChangeAge }></input>
-      <Button label='Vérifier' onClick={verifyAge} />
+      <input type="text" placeholder='Ajouter une nouvelle tâche' value={tache} onChange={ onChangeTache }></input>
+      <Button label='Ajouter' onClick={addTache} />
     </>
   )
 }

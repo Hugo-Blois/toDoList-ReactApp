@@ -10,7 +10,7 @@ function App() {
     { id: 3, content: 'Item 3' },
   ];
 
-  const [tache, setTache] = useState<string>('');
+  const [tache, setTache] = useState<string>("");
   const [itemList, setItemList] = useState(initialItemList);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
@@ -21,8 +21,10 @@ function App() {
 
   function addTache(tache: string) {
     const newItemList = [...itemList, { id: itemList.length + 1, content: tache }];
-    
-    setItemList(newItemList);
+    if (tache != ""){
+      setItemList(newItemList);
+      setTache("");
+    }
   }
 
   return (

@@ -1,0 +1,15 @@
+/* Style de base du bouton */
+.button {
+    background-color: #0074d9; /* Couleur bleue */
+    color: #fff; /* Texte en blanc */
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transition sur la couleur de fond */
+  }
+  
+/* Style du bouton au survol */
+.button:hover {
+  background-color: #0056b3; /* Couleur bleue plus sombre au survol */
+}

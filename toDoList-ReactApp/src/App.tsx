@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './App.css'
 import List from './List';
 import Button from './Button'
@@ -11,31 +10,11 @@ interface ListItem {
 
 function App() {
 
-  const [addTask, setAddTask] = useState<boolean>(true);
+  const [addTask, setAddTask] = useState<boolean>(false);
 
-  const [itemList, setItemList] = useState<ListItem[]>([
-
-    { id: 1, content: 'Item 1' },
-    { id: 2, content: 'Item 2' },
-    { id: 3, content: 'Item 3' },
-  ]);
-
-  const handleConfirm = () => {
-    // Generate a unique ID for the new item
-    const newId = itemList.length + 1;
-
-    // Add a new item to the itemList
-    const newItem: ListItem = {
-      id: newId,
-      content: `Item ${newId}`,
-    };
-
-    // Update the state with the new itemList
-    setItemList([...itemList, newItem]);
-  };
+  const [itemList, setItemList] = useState<ListItem[]>([]);
 
   const [tache, setTache] = useState<string>("");
-  const [itemList, setItemList] = useState(initialItemList);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -52,30 +31,23 @@ function App() {
   }
 
   return (
-    <>
     <div className="App">
+
+      <h1>List Example</h1>
+      <List items={itemList} />
       {
        addTask === true ?
        <Fragment>
        <input type="text" placeholder='Ajouter une nouvelle tâche' value={tache} onChange={ onChangeTache }></input>
-       <Button label='Ajouter' onClick={() => addTache(tache)} />
        <Button label='Confirm' onClick={() => {
           setAddTask(false);
-          handleConfirm(); 
+          addTache(tache); 
         }} />
        </Fragment>
         :
-       <Fragment>
-        <p>nothing</p>
-       </Fragment>
+        <Button label='Add a task' onClick={ () => setAddTask(true)}/>
       }
-
-
-      <h1>List Example</h1>
-      <List items={itemList} />
-      <Button label='Add a task' onClick={ () => setAddTask(true)}/>
     </div>
-    </>
   )
 }
 

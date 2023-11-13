@@ -9,32 +9,40 @@ interface ListItem {
 }
 
 function App() {
-
   const [addTask, setAddTask] = useState<boolean>(false);
-
   const [itemList, setItemList] = useState<ListItem[]>([]);
-
   const [tache, setTache] = useState<string>("");
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
-    if(text != '')
-      setTache(text);
+    if(text != '') setTache(text);
   }
 
   function addTache(tache: string) {
-    const newItemList = [...itemList, { id: itemList.length + 1, content: tache }];
     if (tache != ""){
+      const newItemList = [...itemList, { id: itemList.length + 1, content: tache }];
       setItemList(newItemList);
       setTache("");
     }
+  }
+
+  function deleteTache(id: number) {
+    const updatedItemList = itemList.filter((item) => item.id !== id);
+    setItemList(updatedItemList);
+  }
+
+  function editTache(id: number, newContent: string) {
+    const updatedItemList = itemList.map((item) =>
+      item.id === id ? { ...item, content: newContent } : item
+    );
+    setItemList(updatedItemList);
   }
 
   return (
     <div className="App">
 
       <h1>List Example</h1>
-      <List items={itemList} />
+      <List items={itemList} onDelete={deleteTache} onEdit={editTache}/>
       {
        addTask === true ?
        <Fragment>

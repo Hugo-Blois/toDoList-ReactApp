@@ -60,26 +60,34 @@ function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-      {
-       addTask === true ? 
-        <div className='add-task'>
-          <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
-          <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
-          {error && <p className="error-message">{error}</p>}
-          <div>
-            <Button label='Confirm' onClick={() => {
-                  addTache(tache, description);
-                } } children={undefined} />
-            <Button label='Cancel' onClick={() => {
-                  setAddTask(false);
-                  setError(null);
-                } } children={undefined} />
+      
+      <div className="task-section">
+        <h2>To-Do Tasks</h2>
+        <List items={itemList.filter((item) => !item.done)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        {
+        addTask === true ? 
+          <div className='add-task'>
+            <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
+            <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
+            {error && <p className="error-message">{error}</p>}
+            <div>
+              <Button label='Confirm' onClick={() => {
+                    addTache(tache, description);
+                  } } children={undefined} />
+              <Button label='Cancel' onClick={() => {
+                    setAddTask(false);
+                    setError(null);
+                  } } children={undefined} />
+            </div>
           </div>
-        </div>
-        :
-        <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
-      }
+          :
+          <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
+        }
+      </div>
+      <div className="completed-task-section">
+        <h2>Completed Tasks</h2>
+        <List items={itemList.filter((item) => item.done)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} />
+      </div>
     </div>
   );
 }

@@ -1,6 +1,11 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import Button from './Button';
 import React from 'react';
 import TaskItem from './TaskItem';
 import './List.css';
+
 interface ListItem {
   id: number;
   title: string;
@@ -11,6 +16,7 @@ interface ListItem {
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
+
   onEdit: (id: number, newContent: string) => void;
   onToggleDone: (id: number) => void;
 }

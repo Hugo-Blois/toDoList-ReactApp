@@ -1,9 +1,12 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import Button from './Button'
 import { useState } from 'react';
-
+import './List.css';
 interface ListItem {
   id: number;
+  title: string;
   content: string;
 }
 
@@ -25,13 +28,22 @@ const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
   };
 
   return (
-    <ul>
-      {items.map(item => (
-         <li key={item.id}>
-         {item.content} 
-         <button onClick={() => handleEdit(item.id)}>Edit</button>
-         <Button label='Supprimer' onClick={() => onDelete(item.id)} />
-       </li>
+    <ul className="custom-list">
+      {items.map((item) => (
+        <li key={item.id} className="list-item">
+          
+          <span className="item-title">{item.title}</span>
+          <span className="item-content">{item.content}</span>
+
+          <Button onClick={() => handleEdit(item.id)} label={''}>
+            <FontAwesomeIcon icon={faEdit} />
+          </Button>
+
+          <Button onClick={() => onDelete(item.id)} label={''}>
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+
+        </li>
       ))}
     </ul>
   );

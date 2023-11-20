@@ -17,17 +17,31 @@ interface TaskItemProps {
     onToggleDone: (id: number) => void;
   }
 
-const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onEdit, onToggleDone }) => {
-  const handleEdit = () => {
-    const newContent = window.prompt('Enter the new content:', item.content);
-    if (newContent !== null) {
-      onEdit(item.id, newContent);
-    }
-  };
-
-  return (
-    <li key={item.id} className="list-item ">
-
+  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onEdit, onToggleDone }) => {
+    const handleEdit = () => {
+      const newContent = window.prompt('Enter the new content:', item.content);
+      if (newContent !== null) {
+        onEdit(item.id, newContent);
+      }
+    };
+  
+    return (
+      <li
+        key={item.id}
+        className="list-item"
+        style={{
+          border: '2px solid white',
+          borderRadius: '8px', // Ajoutez une bordure arrondie si nécessaire
+          padding: '10px',
+          marginBottom: '10px',
+          width: '70vw',
+          display: 'flex', // Ajoutez cette ligne pour utiliser le modèle de boîte flexible
+          justifyContent: 'space-between', // Ajoutez cette ligne pour espacer les éléments horizontalement
+          alignItems: 'center', // Ajoutez cette ligne pour aligner les éléments verticalement au centre
+        }}
+      >
+  
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <input
             type="checkbox"
             checked={item.done}
@@ -36,17 +50,20 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onEdit, onToggleDon
           
           <span className="item-title">{item.title}</span>
           <span className="item-content">{item.content}</span>
-
+        </div>
+  
+        <div>
           <Button onClick={() => handleEdit()} label={''}>
             <FontAwesomeIcon icon={faEdit} />
           </Button>
-
+  
           <Button onClick={() => onDelete(item.id)} label={''}>
             <FontAwesomeIcon icon={faTrash} />
           </Button>
-
-        </li>
-  );
-};
-
-export default TaskItem;
+        </div>
+  
+      </li>
+    );
+  };
+  
+  export default TaskItem;

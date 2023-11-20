@@ -30,6 +30,9 @@ interface TaskItemProps {
         key={item.id}
         className="list-item"
         style={{
+          border: '2px',
+          borderRadius: '8px',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
           padding: '10px',
           marginBottom: '10px',
           width: '70vw',
@@ -39,14 +42,15 @@ interface TaskItemProps {
         }}
       >
   
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
           <input
             type="checkbox"
             checked={item.done}
             onChange={() => onToggleDone(item.id)}
+            style={{ marginRight: '30px' }}
           />
           
-          <span className="item-title">{item.title}</span>
+          <span className="item-title" style={{ marginRight: '50px' }}>{item.title}</span>
           <span className="item-content">{item.content}</span>
         </div>
   

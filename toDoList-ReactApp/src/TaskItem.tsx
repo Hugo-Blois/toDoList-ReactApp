@@ -30,14 +30,12 @@ interface TaskItemProps {
         key={item.id}
         className="list-item"
         style={{
-          border: '2px solid white',
-          borderRadius: '8px', // Ajoutez une bordure arrondie si nécessaire
           padding: '10px',
           marginBottom: '10px',
           width: '70vw',
-          display: 'flex', // Ajoutez cette ligne pour utiliser le modèle de boîte flexible
-          justifyContent: 'space-between', // Ajoutez cette ligne pour espacer les éléments horizontalement
-          alignItems: 'center', // Ajoutez cette ligne pour aligner les éléments verticalement au centre
+          display: 'flex',
+          justifyContent: 'space-between', 
+          alignItems: 'center',
         }}
       >
   

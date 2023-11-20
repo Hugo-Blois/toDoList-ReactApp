@@ -7,6 +7,7 @@ interface ListItem {
   id: number;
   title: string;
   content: string;
+  done: boolean;
 }
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
 
   function addTache(tache: string, description: string) {
     if (tache != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description }];
+      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
@@ -45,10 +46,17 @@ function App() {
     setItemList(updatedItemList);
   }
 
+  function toggleDone(id: number) {
+    const updatedItemList = itemList.map((item) =>
+      item.id === id ? { ...item, done: !item.done } : item
+    );
+    setItemList(updatedItemList);
+  }
+
   return (
     <div className="App">
       <h1>List Example</h1>
-      <List items={itemList} onDelete={deleteTache} onEdit={editTache}/>
+      <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
       {
        addTask === true ?
        <Fragment>

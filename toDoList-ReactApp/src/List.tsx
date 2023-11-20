@@ -8,15 +8,17 @@ interface ListItem {
   id: number;
   title: string;
   content: string;
+  done: boolean;
 }
 
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
   onEdit: (id: number, newContent: string) => void;
+  onToggleDone: (id: number) => void;
 }
 
-const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
+const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone  }) => {
   const [editContent, setEditContent] = useState<string>('');
 
   const handleEdit = (id: number) => {
@@ -31,6 +33,12 @@ const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
     <ul className="custom-list">
       {items.map((item) => (
         <li key={item.id} className="list-item">
+
+          <input
+            type="checkbox"
+            checked={item.done}
+            onChange={() => onToggleDone(item.id)}
+          />
           
           <span className="item-title">{item.title}</span>
           <span className="item-content">{item.content}</span>

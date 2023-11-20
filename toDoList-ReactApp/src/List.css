@@ -34,4 +34,18 @@
 .button:hover {
   background-color: #0056b3; /* Couleur bleue plus sombre au survol */
 }
+
+.edit-task{
+    display: flex;
+}
+
+.edit-task input {
+    margin: 10px;
+    height: auto;
+    background-color: transparent; 
+    border: none;
+    outline: none; 
+    font-size: inherit; 
+}
+
   

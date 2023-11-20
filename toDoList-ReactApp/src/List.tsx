@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
-import Button from './Button'
-import { useState } from 'react';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import Button from './Button';
 import './List.css';
+
 interface ListItem {
   id: number;
   title: string;
@@ -13,36 +13,42 @@ interface ListItem {
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
-  onEdit: (id: number, newContent: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string) => void;
 }
 
-const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
-  const [editContent, setEditContent] = useState<string>('');
+const List: React.FC<ListProps> = ({ items, onDelete}) => {
+  const [editStates, setEditStates] = useState<{ [key: number]: { title: string; content: string } }>({});
 
-  const handleEdit = (id: number) => {
-    const newContent = window.prompt('Enter the new content:', editContent);
-    if (newContent !== null) {
-      setEditContent(newContent);
-      onEdit(id, newContent);
-    }
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => {
+    setEditStates((prev) => ({ ...prev, [itemId]: { ...prev[itemId], title: e.target.value } }));
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => {
+    setEditStates((prev) => ({ ...prev, [itemId]: { ...prev[itemId], content: e.target.value } }));
   };
 
   return (
     <ul className="custom-list">
       {items.map((item) => (
         <li key={item.id} className="list-item">
-          
-          <span className="item-title">{item.title}</span>
-          <span className="item-content">{item.content}</span>
+          <div className='edit-task'>
+          <input
+            type="text"
+            value={editStates[item.id]?.title !== undefined ? editStates[item.id]?.title : ''}
+            onChange={(e) => handleTitleChange(e, item.id)}
+            placeholder="Nouveau titre"
+          />
 
-          <Button onClick={() => handleEdit(item.id)} label={''}>
-            <FontAwesomeIcon icon={faEdit} />
-          </Button>
-
-          <Button onClick={() => onDelete(item.id)} label={''}>
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
-
+          <input
+            type="text"
+            value={editStates[item.id]?.content !== undefined ? editStates[item.id]?.content : ''}
+            onChange={(e) => handleContentChange(e, item.id)}
+            placeholder="Nouvelle description"
+          />
+            <Button onClick={() => onDelete(item.id)} label="">
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </div>
         </li>
       ))}
     </ul>

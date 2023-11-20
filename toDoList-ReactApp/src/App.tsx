@@ -1,7 +1,7 @@
 import './App.css';
 import List from './List';
 import Button from './Button';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 interface ListItem {
   id: number;
@@ -15,6 +15,7 @@ function App() {
   const [itemList, setItemList] = useState<ListItem[]>([]);
   const [tache, setTache] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -26,11 +27,14 @@ function App() {
   }
 
   function addTache(tache: string, description: string) {
-    if (tache != ""){
+    if (tache != "" && description != ""){
       const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
+      setAddTask(false);
+    }else {
+      setError("Les champs titre et description ne peuvent pas être vides");
     }
   }
 
@@ -58,17 +62,21 @@ function App() {
       <h1>List Example</h1>
       <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
       {
-       addTask === true ?
-       <Fragment>
+       addTask === true ? 
         <div className='add-task'>
-        <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
-        <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
-        <Button label='Confirm' onClick={() => {
-                setAddTask(false);
-                addTache(tache, description);
-              } } children={undefined} />
+          <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
+          <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
+          {error && <p className="error-message">{error}</p>}
+          <div>
+            <Button label='Confirm' onClick={() => {
+                  addTache(tache, description);
+                } } children={undefined} />
+            <Button label='Cancel' onClick={() => {
+                  setAddTask(false);
+                  setError(null);
+                } } children={undefined} />
+          </div>
         </div>
-       </Fragment>
         :
         <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
       }

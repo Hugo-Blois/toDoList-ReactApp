@@ -5,15 +5,17 @@ import { useState } from 'react';
 interface ListItem {
   id: number;
   content: string;
+  done: boolean;
 }
 
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
   onEdit: (id: number, newContent: string) => void;
+  onToggleDone: (id: number) => void;
 }
 
-const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
+const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone  }) => {
   const [editContent, setEditContent] = useState<string>('');
 
   const handleEdit = (id: number) => {
@@ -31,6 +33,11 @@ const List: React.FC<ListProps> = ({ items, onDelete, onEdit  }) => {
          {item.content} 
          <button onClick={() => handleEdit(item.id)}>Edit</button>
          <Button label='Supprimer' onClick={() => onDelete(item.id)} />
+         <input
+            type="checkbox"
+            checked={item.done}
+            onChange={() => onToggleDone(item.id)}
+          />
        </li>
       ))}
     </ul>

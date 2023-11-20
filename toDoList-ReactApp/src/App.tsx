@@ -6,6 +6,7 @@ import { Fragment, useState } from 'react';
 interface ListItem {
   id: number;
   content: string;
+  done: boolean;
 }
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 
   function addTache(tache: string) {
     if (tache != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, content: tache }];
+      const newItemList = [...itemList, { id: itemList.length + 1, content: tache, done: false  }];
       setItemList(newItemList);
       setTache("");
     }
@@ -38,11 +39,18 @@ function App() {
     setItemList(updatedItemList);
   }
 
+  function toggleDone(id: number) {
+    const updatedItemList = itemList.map((item) =>
+      item.id === id ? { ...item, done: !item.done } : item
+    );
+    setItemList(updatedItemList);
+  }
+
   return (
     <div className="App">
 
       <h1>List Example</h1>
-      <List items={itemList} onDelete={deleteTache} onEdit={editTache}/>
+      <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
       {
        addTask === true ?
        <Fragment>

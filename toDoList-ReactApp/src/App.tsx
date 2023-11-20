@@ -59,7 +59,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>List Example</h1>
+      <h1>Todo List</h1>
       <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
       {
        addTask === true ? 

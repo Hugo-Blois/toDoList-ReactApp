@@ -50,8 +50,10 @@ interface TaskItemProps {
             style={{ marginRight: '30px' }}
           />
           
-          <span className="item-title" style={{ marginRight: '50px' }}>{item.title}</span>
-          <span className="item-content">{item.content}</span>
+          <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
+            {item.title}</span>
+          <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
+            {item.content}</span>
         </div>
   
         <div>

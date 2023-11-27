@@ -8,6 +8,7 @@ interface ListItem {
   title: string;
   content: string;
   done: boolean;
+  dueDate?: string;
 }
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
   const [itemList, setItemList] = useState<ListItem[]>([]);
   const [tache, setTache] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [dueDate, setDueDate] = useState<string | undefined>("");
   const [error, setError] = useState<string | null>(null);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
@@ -25,16 +27,21 @@ function App() {
     const text = String(e.currentTarget.value);
     if(text != '') setDescription(text);
   }
+  function onChangeDueDate(e: React.ChangeEvent<HTMLInputElement>){
+    const date = e.currentTarget.value;
+    setDueDate(date);
+  }
 
-  function addTache(tache: string, description: string) {
-    if (tache != "" && description != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false }];
+  function addTache(tache: string, description: string, dueDate: string) {
+    if (tache != "" && description != "" && dueDate != ""){
+      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false, dueDate }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
+      setDueDate(undefined);
       setAddTask(false);
     }else {
-      setError("Les champs titre et description ne peuvent pas être vides");
+      setError("Les champs ne peuvent pas être vides");
     }
   }
 
@@ -69,13 +76,17 @@ function App() {
           <div className='add-task'>
             <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
             <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
+            <input type="date" placeholder="Date d'échéance" value={dueDate || ''} onChange={onChangeDueDate}></input>
             {error && <p className="error-message">{error}</p>}
             <div>
               <Button label='Confirm' onClick={() => {
-                    addTache(tache, description);
+                    addTache(tache, description, dueDate || '');
                   } } children={undefined} />
               <Button label='Cancel' onClick={() => {
                     setAddTask(false);
+                    setTache("");
+                    setDescription("");
+                    setDueDate(undefined);
                     setError(null);
                   } } children={undefined} />
             </div>

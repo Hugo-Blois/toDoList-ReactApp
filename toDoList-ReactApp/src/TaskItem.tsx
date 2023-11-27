@@ -8,6 +8,7 @@ interface ListItem {
     title: string;
     content: string;
     done: boolean;
+    dueDate?: string;
 }
 
 interface TaskItemProps {
@@ -55,8 +56,15 @@ interface TaskItemProps {
           <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
             {item.content}</span>
         </div>
+        
   
         <div>
+          {item.dueDate && (
+              <span className="item-due-date" >
+                  Echéance : {item.dueDate}
+              </span>
+          )}
+
           <Button onClick={() => handleEdit()} label={''}>
             <FontAwesomeIcon icon={faEdit} />
           </Button>

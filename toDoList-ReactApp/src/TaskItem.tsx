@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 
 interface ListItem {
-    id: number;
-    title: string;
-    content: string;
-    done: boolean;
-    dueDate?: string;
+  id: number;
+  title: string;
+  content: string;
+  done: boolean;
+  dueDate?: string;
 }
 
 interface TaskItemProps {
@@ -19,6 +20,24 @@ interface TaskItemProps {
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(item.title);
+  const [editedContent, setEditedContent] = useState(item.content);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setEditedTitle(item.title);
+    setEditedContent(item.content);
+  };
+
+  const handleSaveClick = () => {
+    setIsEditing(false);
+    onEdit(item.id, editedTitle, editedContent);
+  };
 
   return (
     <li
@@ -32,11 +51,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
         marginBottom: '10px',
         width: '70vw',
         display: 'flex',
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         alignItems: 'center',
       }}
     >
-
       <div style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
         <input
           type="checkbox"
@@ -44,30 +62,62 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           onChange={() => onToggleDone(item.id)}
           style={{ marginRight: '30px' }}
         />
-        
-        <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
-          {item.title}</span>
-        <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
-          {item.content}</span>
+
+        {isEditing ? (
+          <>
+          <input
+            className="item-onedit"
+            type="text"
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            placeholder="New Title"
+          />
+
+          <input
+            className="item-onedit item-content"
+            type="text"
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+            placeholder="New Content"
+          />
+          </>
+        ) : (
+          <>
+            <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
+              {item.title}
+            </span>
+            <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
+              {item.content}
+            </span>
+          </>
+        )}
       </div>
-      
 
       <div>
         {item.dueDate && (
-            <span className="item-due-date" >
-                DeadLine : {item.dueDate}
-            </span>
+          <span className="item-due-date">DeadLine : {item.dueDate}</span>
         )}
 
-        <Button onClick={() => onEdit(item.id, item.title, item.content)} label={''}>
-          <FontAwesomeIcon icon={faEdit} />
-        </Button>
-
-        <Button onClick={() => onDelete(item.id)} label={''}>
-          <FontAwesomeIcon icon={faTrash} />
-        </Button>
+        {isEditing ? (
+          <>
+            <Button onClick={handleSaveClick} label={''}>
+              <FontAwesomeIcon icon={faCheck}/>
+            </Button>
+            <Button onClick={handleCancelClick} label={''} >
+              <FontAwesomeIcon icon={faTimes}/>
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={handleEditClick} label={''}>
+              <FontAwesomeIcon icon={faEdit} />
+            </Button>
+            <Button onClick={() => onDelete(item.id)} label={''}>
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </>
+        )}
       </div>
-
     </li>
   );
 };

@@ -52,9 +52,9 @@ function App() {
     setItemList(updatedItemList);
   }
 
-  function editTache(id: number, newContent: string) {
+  function editTache(id: number, newTitle: string, newContent: string) {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, content: newContent } : item
+      item.id === id ? { ...item, title: newTitle, content: newContent } : item
     );
     setItemList(updatedItemList);
   }
@@ -69,7 +69,6 @@ function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      
       <div className="task-section">
         <h2>To-Do Tasks</h2>
         <h4>Expired Tasks</h4>

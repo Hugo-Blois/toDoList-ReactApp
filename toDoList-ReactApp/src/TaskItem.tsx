@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 interface ListItem {
     id: number;
     title: string;
     content: string;
     done: boolean;
+    dueDate?: string;
 }
 
 interface TaskItemProps {
@@ -15,16 +16,9 @@ interface TaskItemProps {
     onToggleDone: (id: number) => void;
     onDelete: (id: number) => void;
     onEdit: (id: number, newTitlte: string, newContent: string) => void;
-    onHandleTitleChange: (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => void;
-    onHandleContentChange: (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => void;
   }
 
-  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
-
-    const handleEdit = () => {
-      onEdit(item.id, editStates[item.id]?.title || item.title, editStates[item.id]?.content || item.content);
-      setEditStates((prev) => ({ ...prev, [item.id]: { title: '', content: '' } }));
-    };
+  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone }) => {
   
     return (
       <li
@@ -50,27 +44,16 @@ interface TaskItemProps {
             onChange={() => onToggleDone(item.id)}
             style={{ marginRight: '30px' }}
           />
-          
-          <input
-            type="text"
-            value={editStates[item.id]?.title !== undefined ? editStates[item.id]?.title : ''}
-            onChange={(e) => handleTitleChange(e, item.id)}
-            placeholder="Nouveau titre"
-          />
-
-          <input
-            type="text"
-            value={editStates[item.id]?.content !== undefined ? editStates[item.id]?.content : ''}
-            onChange={(e) => handleContentChange(e, item.id)}
-            placeholder="Nouvelle description"
-          />
 
         </div>
-
+        
+  
         <div>
-        <Button onClick={handleEdit} label="">
-          <FontAwesomeIcon icon={faEdit} />
-        </Button>
+          {item.dueDate && (
+              <span className="item-due-date" >
+                  DeadLine : {item.dueDate}
+              </span>
+          )}
   
         <Button onClick={() => onDelete(item.id)} label={''}>
           <FontAwesomeIcon icon={faTrash} />

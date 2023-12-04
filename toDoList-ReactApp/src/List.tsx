@@ -6,6 +6,7 @@ interface ListItem {
   title: string;
   content: string;
   done: boolean;
+  dueDate?: string;
 }
 
 interface ListProps {

@@ -2,6 +2,8 @@ import './App.css';
 import List from './List';
 import Button from './Button';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 interface ListItem {
   id: number;
@@ -18,6 +20,8 @@ function App() {
   const [description, setDescription] = useState<string>("");
   const [dueDate, setDueDate] = useState<string | undefined>("");
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [showSearch, setShowSearch] = useState<boolean>(false);
   const dateTime = new Date().toISOString().split('T')[0];
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
@@ -65,16 +69,42 @@ function App() {
     setItemList(updatedItemList);
   }
 
+  function filterTasks(items: ListItem[]): ListItem[] {
+    return items.filter((item) =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.content.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }
+
   return (
     <div className="App">
       <h1>Todo List</h1>
       
       <div className="task-section">
-        <h2>To-Do Tasks</h2>
+        <h2>
+          To-Do Tasks
+          <button onClick={() => {
+            setSearchTerm("");
+            setShowSearch(!showSearch);
+          }}>
+            <FontAwesomeIcon icon={faSearch} />
+          </button> 
+        </h2>
+        {showSearch && (
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        )}
+
         <h4>Expired Tasks</h4>
-        <List items={itemList.filter((item) => !item.done && item.dueDate <= dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate <= dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
         <h4>Active Tasks</h4>
-        <List items={itemList.filter((item) => !item.done && item.dueDate > dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate > dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
         {
         addTask === true ? 
           <div className='add-task'>

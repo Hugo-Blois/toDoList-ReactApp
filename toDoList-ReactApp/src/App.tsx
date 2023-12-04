@@ -148,13 +148,14 @@ function App() {
                     setError(null);
                   } } children={undefined} />
             </div>
-        </div>
+          </div>
         :
         <div className='add-task'>
           <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
         </div>
-    }
-  </div>
+        }
+      </div>
+    </div>
 );
 
 

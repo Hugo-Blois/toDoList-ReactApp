@@ -49,7 +49,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         padding: '10px',
         marginBottom: '10px',
-        width: '70vw',
+        width: '40vw',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

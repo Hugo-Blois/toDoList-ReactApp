@@ -61,7 +61,7 @@ interface TaskItemProps {
         <div>
           {item.dueDate && (
               <span className="item-due-date" >
-                  Echéance : {item.dueDate}
+                  DeadLine : {item.dueDate}
               </span>
           )}
 

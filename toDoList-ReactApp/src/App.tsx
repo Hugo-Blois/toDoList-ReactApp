@@ -42,7 +42,7 @@ function App() {
       setDueDate(undefined);
       setAddTask(false);
     }else {
-      setError("Les champs ne peuvent pas être vides");
+      setError("Fields cannot be empty");
     }
   }
 
@@ -78,9 +78,9 @@ function App() {
         {
         addTask === true ? 
           <div className='add-task'>
-            <input type="text" placeholder='Titre' value={tache} onChange={ onChangeTache }></input>
+            <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
             <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
-            <input type="date" placeholder="Date d'échéance" value={dueDate || ''} onChange={onChangeDueDate}></input>
+            <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
             {error && <p className="error-message">{error}</p>}
             <div>
               <Button label='Confirm' onClick={() => {

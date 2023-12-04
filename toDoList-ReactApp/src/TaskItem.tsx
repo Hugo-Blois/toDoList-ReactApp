@@ -16,13 +16,14 @@ interface TaskItemProps {
   item: ListItem;
   onToggleDone: (id: number) => void;
   onDelete: (id: number) => void;
-  onEdit: (id: number, newTitle: string, newContent: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(item.title);
   const [editedContent, setEditedContent] = useState(item.content);
+  const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -32,11 +33,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
     setIsEditing(false);
     setEditedTitle(item.title);
     setEditedContent(item.content);
+    setEditedDueDate(item.dueDate || '');
   };
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    onEdit(item.id, editedTitle, editedContent);
+    onEdit(item.id, editedTitle, editedContent, editedDueDate);
   };
 
   return (
@@ -49,7 +51,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         padding: '10px',
         marginBottom: '10px',
-        width: '70vw',
+        width: '40vw',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -80,6 +82,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
             onChange={(e) => setEditedContent(e.target.value)}
             placeholder="New Content"
           />
+
+          <input 
+            className="item-onedit item-content"
+            type="date" 
+            value={editedDueDate}
+            onChange={(e) => setEditedDueDate(e.target.value)}
+            placeholder="Expiry date" 
+          />
+
           </>
         ) : (
           <>
@@ -89,15 +100,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
             <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
               {item.content}
             </span>
+            {item.dueDate && (
+              <span className="item-due-date">DeadLine : {item.dueDate}</span>
+            )}
           </>
         )}
       </div>
 
       <div>
-        {item.dueDate && (
-          <span className="item-due-date">DeadLine : {item.dueDate}</span>
-        )}
-
         {isEditing ? (
           <>
             <Button onClick={handleSaveClick} label={''}>

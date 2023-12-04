@@ -13,7 +13,7 @@ interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
 
-  onEdit: (id: number, newTitle: string, newContent: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
   onToggleDone: (id: number) => void;
 }
 

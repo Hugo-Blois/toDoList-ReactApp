@@ -15,9 +15,6 @@ interface ListProps {
 
   onEdit: (id: number, newContent: string) => void;
   onToggleDone: (id: number) => void;
-
-  onHandleTitleChange: (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => void;
-  onHandleContentChange: (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => void;
 }
 
 const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone  }) => {
@@ -25,7 +22,7 @@ const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone  }) =
   return (
     <ul className="custom-list">
       {items.map((item) => (
-            <TaskItem key={item.id} item={item} onDelete={onDelete} onEdit={onEdit} onToggleDone={onToggleDone} onHandleContentChange={onHandleContentChange}/>
+            <TaskItem key={item.id} item={item} onDelete={onDelete} onEdit={onEdit} onToggleDone={onToggleDone}/>
       ))}
     </ul>
   );

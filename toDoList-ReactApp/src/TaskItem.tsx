@@ -19,7 +19,9 @@ interface TaskItemProps {
     onHandleContentChange: (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => void;
   }
 
-  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
+  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit, onHandleTitleChange, onHandleContentChange}) => {
+
+    const [editStates, setEditStates] = useState<{ [key: number]: { title: string; content: string } }>({});
 
     const handleEdit = () => {
       onEdit(item.id, editStates[item.id]?.title || item.title, editStates[item.id]?.content || item.content);
@@ -54,14 +56,14 @@ interface TaskItemProps {
           <input
             type="text"
             value={editStates[item.id]?.title !== undefined ? editStates[item.id]?.title : ''}
-            onChange={(e) => handleTitleChange(e, item.id)}
+            onChange={(e) => onHandleTitleChange(e, item.id)}
             placeholder="Nouveau titre"
           />
 
           <input
             type="text"
             value={editStates[item.id]?.content !== undefined ? editStates[item.id]?.content : ''}
-            onChange={(e) => handleContentChange(e, item.id)}
+            onChange={(e) => onHandleContentChange(e, item.id)}
             placeholder="Nouvelle description"
           />
 

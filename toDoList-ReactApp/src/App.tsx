@@ -36,10 +36,10 @@ function App() {
       setDescription('');
       setAddTask(false);
       
-      // setEditStates(prev => ({
-      //   ...prev,
-      //   [newItemList[newItemList.length - 1].id]: { title: '', content: '' }
-      // }));
+      setEditStates(prev => ({
+        ...prev,
+        [newItemList[newItemList.length - 1].id]: { title: 'Test', content: 'Test' }
+      }));
       
       setError(null);
     } else {
@@ -78,7 +78,7 @@ function App() {
   return (
     <div className="App">
       <h1>Todo List</h1>
-      <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+      <List items={itemList} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} onHandleTitleChange={handleTitleChange} onHandleContentChange={handleContentChange}/>
       {
        addTask === true ? 
         <div className='add-task'>

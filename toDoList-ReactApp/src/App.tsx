@@ -16,6 +16,7 @@ function App() {
   const [tache, setTache] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [editStates, setEditStates] = useState<{ [key: number]: { title: string; content: string } }>({});
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -25,18 +26,27 @@ function App() {
     const text = String(e.currentTarget.value);
     if(text != '') setDescription(text);
   }
+  
 
   function addTache(tache: string, description: string) {
-    if (tache != "" && description != ""){
+    if (tache !== "" && description !== "") {
       const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
       setAddTask(false);
-    }else {
+      
+      // setEditStates(prev => ({
+      //   ...prev,
+      //   [newItemList[newItemList.length - 1].id]: { title: '', content: '' }
+      // }));
+      
+      setError(null);
+    } else {
       setError("Les champs titre et description ne peuvent pas être vides");
     }
   }
+  
 
   function deleteTache(id: number) {
     const updatedItemList = itemList.filter((item) => item.id !== id);
@@ -56,6 +66,14 @@ function App() {
     );
     setItemList(updatedItemList);
   }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => {
+    setEditStates((prev) => ({ ...prev, [itemId]: { ...prev[itemId], title: e.target.value } }));
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>, itemId: number) => {
+    setEditStates((prev) => ({ ...prev, [itemId]: { ...prev[itemId], content: e.target.value } }));
+  };
 
   return (
     <div className="App">
@@ -85,3 +103,4 @@ function App() {
 }
 
 export default App;
+

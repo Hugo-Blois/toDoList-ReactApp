@@ -1,81 +1,135 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 
 interface ListItem {
-    id: number;
-    title: string;
-    content: string;
-    done: boolean;
-    dueDate?: string;
+  id: number;
+  title: string;
+  content: string;
+  done: boolean;
+  dueDate?: string;
 }
 
 interface TaskItemProps {
-    item: ListItem;
-    onDelete: (id: number) => void;
-    onEdit: (id: number, newContent: string) => void;
-    onToggleDone: (id: number) => void;
-  }
+  item: ListItem;
+  onToggleDone: (id: number) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
+}
 
-  const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onEdit, onToggleDone }) => {
-    const handleEdit = () => {
-      const newContent = window.prompt('Enter the new content:', item.content);
-      if (newContent !== null) {
-        onEdit(item.id, newContent);
-      }
-    };
-  
-    return (
-      <li
-        key={item.id}
-        className="list-item"
-        style={{
-          border: '2px',
-          borderRadius: '8px',
-          backgroundColor: 'rgba(0, 0, 0, 0.2)',
-          padding: '10px',
-          marginBottom: '10px',
-          width: '70vw',
-          display: 'flex',
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-        }}
-      >
-  
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
-          <input
-            type="checkbox"
-            checked={item.done}
-            onChange={() => onToggleDone(item.id)}
-            style={{ marginRight: '30px' }}
-          />
-          
-          <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
-            {item.title}</span>
-          <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
-            {item.content}</span>
-        </div>
-        
-  
-        <div>
-          {item.dueDate && (
-              <span className="item-due-date" >
-                  DeadLine : {item.dueDate}
-              </span>
-          )}
+const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(item.title);
+  const [editedContent, setEditedContent] = useState(item.content);
+  const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
 
-          <Button onClick={() => handleEdit()} label={''}>
-            <FontAwesomeIcon icon={faEdit} />
-          </Button>
-  
-          <Button onClick={() => onDelete(item.id)} label={''}>
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
-        </div>
-  
-      </li>
-    );
+  const handleEditClick = () => {
+    setIsEditing(true);
   };
-  
-  export default TaskItem;
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setEditedTitle(item.title);
+    setEditedContent(item.content);
+    setEditedDueDate(item.dueDate || '');
+  };
+
+  const handleSaveClick = () => {
+    setIsEditing(false);
+    onEdit(item.id, editedTitle, editedContent, editedDueDate);
+  };
+
+  return (
+    <li
+      key={item.id}
+      className="list-item"
+      style={{
+        border: '2px',
+        borderRadius: '8px',
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+        padding: '10px',
+        marginBottom: '10px',
+        width: '40vw',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
+        <input
+          type="checkbox"
+          checked={item.done}
+          onChange={() => onToggleDone(item.id)}
+          style={{ marginRight: '30px' }}
+        />
+
+        {isEditing ? (
+          <>
+          <input
+            className="item-onedit"
+            type="text"
+            value={editedTitle}
+            onChange={(e) => setEditedTitle(e.target.value)}
+            placeholder="New Title"
+          />
+
+          <input
+            className="item-onedit item-content"
+            type="text"
+            value={editedContent}
+            onChange={(e) => setEditedContent(e.target.value)}
+            placeholder="New Content"
+          />
+
+          <input 
+            className="item-onedit item-content"
+            type="date" 
+            value={editedDueDate}
+            onChange={(e) => setEditedDueDate(e.target.value)}
+            placeholder="Expiry date" 
+          />
+
+          </>
+        ) : (
+          <>
+            <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
+              {item.title}
+            </span>
+            <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
+              {item.content}
+            </span>
+            {item.dueDate && (
+              <span className="item-due-date">DeadLine : {item.dueDate}</span>
+            )}
+          </>
+        )}
+      </div>
+
+      <div>
+        {isEditing ? (
+          <>
+            <Button onClick={handleSaveClick} label={''}>
+              <FontAwesomeIcon icon={faCheck}/>
+            </Button>
+            <Button onClick={handleCancelClick} label={''} >
+              <FontAwesomeIcon icon={faTimes}/>
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={handleEditClick} label={''}>
+              <FontAwesomeIcon icon={faEdit} />
+            </Button>
+            <Button onClick={() => onDelete(item.id)} label={''}>
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </>
+        )}
+      </div>
+    </li>
+  );
+};
+
+export default TaskItem;

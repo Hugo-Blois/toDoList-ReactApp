@@ -59,15 +59,16 @@ function App() {
       setError("Fields cannot be empty");
     }
   }
+  
 
   function deleteTache(id: number) {
     const updatedItemList = itemList.filter((item) => item.id !== id);
     setItemList(updatedItemList);
   }
 
-  function editTache(id: number, newContent: string) {
+  function editTache(id: number, newTitle: string, newContent: string, date: string) {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, content: newContent } : item
+      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date} : item
     );
     setItemList(updatedItemList);
   }
@@ -147,17 +148,17 @@ function App() {
                     setError(null);
                   } } children={undefined} />
             </div>
-          </div>
-          :
+        </div>
+        :
+        <div className='add-task'>
           <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
-        }
-      </div>
-      <div className="completed-task-section">
-        <h2>Completed Tasks</h2>
-        <List items={itemList.filter((item) => item.done)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} />
-      </div>
-    </div>
-  );
+        </div>
+    }
+  </div>
+);
+
+
 }
 
 export default App;
+

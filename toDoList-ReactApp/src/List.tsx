@@ -1,6 +1,6 @@
-import React from 'react';
 import TaskItem from './TaskItem';
 import './List.css';
+
 interface ListItem {
   id: number;
   title: string;
@@ -12,15 +12,17 @@ interface ListItem {
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
-  onEdit: (id: number, newContent: string) => void;
+
+  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
   onToggleDone: (id: number) => void;
 }
 
-const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone  }) => {
+const List: React.FC<ListProps> = ({ items, onDelete, onEdit, onToggleDone}) => {
+
   return (
     <ul className="custom-list">
       {items.map((item) => (
-            <TaskItem key={item.id} item={item} onDelete={onDelete} onEdit={onEdit} onToggleDone={onToggleDone} />
+            <TaskItem key={item.id} item={item} onDelete={onDelete} onEdit={onEdit} onToggleDone={onToggleDone}/>
       ))}
     </ul>
   );

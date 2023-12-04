@@ -1,7 +1,5 @@
 import React, { ReactNode } from 'react';
 import './Button.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Assurez-vous d'importer FontAwesomeIcon et les icônes nécessaires
-
 
 interface ButtonProps {
   label: string;

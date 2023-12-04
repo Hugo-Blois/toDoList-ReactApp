@@ -8,7 +8,7 @@ interface ListItem {
   title: string;
   content: string;
   done: boolean;
-  dueDate?: string;
+  dueDate: string;
 }
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [description, setDescription] = useState<string>("");
   const [dueDate, setDueDate] = useState<string | undefined>("");
   const [error, setError] = useState<string | null>(null);
+  const dateTime = new Date().toISOString().split('T')[0];
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -70,7 +71,10 @@ function App() {
       
       <div className="task-section">
         <h2>To-Do Tasks</h2>
-        <List items={itemList.filter((item) => !item.done)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        <h4>Expired Tasks</h4>
+        <List items={itemList.filter((item) => !item.done && item.dueDate <= dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        <h4>Active Tasks</h4>
+        <List items={itemList.filter((item) => !item.done && item.dueDate > dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
         {
         addTask === true ? 
           <div className='add-task'>

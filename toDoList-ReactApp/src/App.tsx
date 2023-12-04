@@ -52,9 +52,9 @@ function App() {
     setItemList(updatedItemList);
   }
 
-  function editTache(id: number, newContent: string) {
+  function editTache(id: number, newTitle: string, newContent: string) {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, content: newContent } : item
+      item.id === id ? { ...item, title: newTitle, content: newContent } : item
     );
     setItemList(updatedItemList);
   }

@@ -19,6 +19,11 @@
   .item-content {
     margin-left: 10px;
   }
+
+  .item-onedit{
+    font-style: italic;
+    font-size: 16px;
+  }
   
 .button {
     background-color: #0074d9; /* Couleur bleue */

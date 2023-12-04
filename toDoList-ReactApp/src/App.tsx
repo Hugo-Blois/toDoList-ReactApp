@@ -86,11 +86,6 @@ function App() {
       item.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
-
-  function hasTaskForDate(date: Date): boolean {
-    const formattedDate = date.toISOString().split('T')[0];
-    return itemList.some((item) => item.dueDate === formattedDate);
-  }
   
 
   return (
@@ -104,35 +99,32 @@ function App() {
         />    
       </div>
       
-      <div className="task-section">
-        <h2>
-          To-Do Tasks
-          <button onClick={() => {
-            setSearchTerm("");
-            setShowSearch(!showSearch);
-          }}>
-            <FontAwesomeIcon icon={faSearch} />
-          </button> 
-        </h2>
-        {showSearch && (
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search tasks..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        )}
-
-        <h4>Expired Tasks</h4>
-        <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate <= dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-        <h4>Active Tasks</h4>
-        <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate > dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-        {
-        addTask === true ? 
-          <div className='add-task'>
-            <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
+      <div className="App">
+    <h1>Todo List</h1>
+    <div className="task-section">
+      <div className="grid-container">
+      <div className="grid-item">
+          <h2>Today</h2>
+          <List items={itemList.filter((item) => !item.done && item.dueDate === dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        </div>
+        <div className="grid-item">
+          <h2>Active Tasks</h2>
+          <List items={itemList.filter((item) => !item.done && item.dueDate > dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        </div>
+        <div className="grid-item">
+          <h2>Completed Tasks</h2>
+          <List items={itemList.filter((item) => item.done)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} />
+        </div>
+        <div className="grid-item">
+          <h2>Expired Tasks</h2>
+          <List items={itemList.filter((item) => !item.done && item.dueDate < dateTime)} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        </div>
+      </div>
+    </div>
+    {
+      addTask === true ? 
+        <div className='add-task'>
+           <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
             <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
             <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
             {error && <p className="error-message">{error}</p>}
@@ -148,13 +140,13 @@ function App() {
                     setError(null);
                   } } children={undefined} />
             </div>
-          </div>
+        </div>
         :
         <div className='add-task'>
           <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
         </div>
-        }
-      </div>
+    }
+  </div>
     </div>
 );
 

@@ -4,6 +4,8 @@ import Button from './Button';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 interface ListItem {
   id: number;
@@ -23,6 +25,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const dateTime = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -39,11 +42,18 @@ function App() {
 
   function addTache(tache: string, description: string, dueDate: string) {
     if (tache != "" && description != "" && dueDate != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false, dueDate }];
+      const newItemList = [...itemList, 
+        { 
+          id: itemList.length + 1, 
+          title: tache, 
+          content: description, 
+          done: false, 
+          dueDate
+        }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
-      setDueDate(undefined);
+      setDueDate("");
       setAddTask(false);
     }else {
       setError("Fields cannot be empty");
@@ -76,9 +86,22 @@ function App() {
     );
   }
 
+  function hasTaskForDate(date: Date): boolean {
+    const formattedDate = date.toISOString().split('T')[0];
+    return itemList.some((item) => item.dueDate === formattedDate);
+  }
+  
+
   return (
     <div className="App">
       <h1>Todo List</h1>
+      <div>
+        <h2>Calendar</h2>
+        <Calendar
+          className='react-calendar'
+          value={selectedDate}
+        />    
+      </div>
       
       <div className="task-section">
         <h2>

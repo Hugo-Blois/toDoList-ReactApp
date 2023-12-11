@@ -7,13 +7,14 @@ interface ListItem {
   content: string;
   done: boolean;
   dueDate?: string;
+  dueTime?: string;
 }
 
 interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
 
-  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string) => void;
   onToggleDone: (id: number) => void;
 }
 

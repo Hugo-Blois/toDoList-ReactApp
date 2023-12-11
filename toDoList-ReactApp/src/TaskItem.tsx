@@ -10,13 +10,14 @@ interface ListItem {
   content: string;
   done: boolean;
   dueDate?: string;
+  dueTime?: string;
 }
 
 interface TaskItemProps {
   item: ListItem;
   onToggleDone: (id: number) => void;
   onDelete: (id: number) => void;
-  onEdit: (id: number, newTitle: string, newContent: string, date: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
@@ -24,6 +25,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
   const [editedTitle, setEditedTitle] = useState(item.title);
   const [editedContent, setEditedContent] = useState(item.content);
   const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
+  const [editedDueTime, setEditedDueTime] = useState(item.dueTime || '');
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -34,11 +36,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
     setEditedTitle(item.title);
     setEditedContent(item.content);
     setEditedDueDate(item.dueDate || '');
+    setEditedDueTime(item.dueTime || '');
   };
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    onEdit(item.id, editedTitle, editedContent, editedDueDate);
+    onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime);
   };
 
   return (
@@ -91,6 +94,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
             placeholder="Expiry date" 
           />
 
+          <input 
+            className="item-onedit item-content"
+            type="time" 
+            value={editedDueTime}
+            onChange={(e) => setEditedDueTime(e.target.value)}
+            placeholder="Time" 
+          />
+
           </>
         ) : (
           <>
@@ -100,8 +111,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
             <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
               {item.content}
             </span>
-            {item.dueDate && (
-              <span className="item-due-date">DeadLine : {item.dueDate}</span>
+            {item.dueDate && item.dueTime &&(
+              <span className="item-due"><i>{item.dueDate}, {item.dueTime}</i></span>
             )}
           </>
         )}

@@ -9,6 +9,7 @@ interface ListItem {
   content: string;
   done: boolean;
   dueDate: string;
+  dueTime: string;
 }
 
 function App() {
@@ -16,7 +17,8 @@ function App() {
   const [itemList, setItemList] = useState<ListItem[]>([]);
   const [tache, setTache] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [dueDate, setDueDate] = useState<string | undefined>("");
+  const [dueDate, setDueDate] = useState<string>("");
+  const [dueTime, setDueTime] = useState<string>("")
   const [error, setError] = useState<string | null>(null);
   const dateTime = new Date().toISOString().split('T')[0];
 
@@ -32,14 +34,19 @@ function App() {
     const date = e.currentTarget.value;
     setDueDate(date);
   }
+  function onChangeDueTime(e: React.ChangeEvent<HTMLInputElement>){
+    const time = e.currentTarget.value;
+    setDueTime(time);
+  }
 
-  function addTache(tache: string, description: string, dueDate: string) {
-    if (tache != "" && description != "" && dueDate != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false, dueDate }];
+  function addTache(tache: string, description: string, dueDate: string, dueTime: string) {
+    if (tache != "" && description != "" && dueDate != "" && dueTime != ""){
+      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false, dueDate, dueTime }];
       setItemList(newItemList);
       setTache('');
       setDescription('');
-      setDueDate(undefined);
+      setDueDate("");
+      setDueTime("")
       setAddTask(false);
     }else {
       setError("Fields cannot be empty");
@@ -52,9 +59,9 @@ function App() {
     setItemList(updatedItemList);
   }
 
-  function editTache(id: number, newTitle: string, newContent: string, date: string) {
+  function editTache(id: number, newTitle: string, newContent: string, date: string, time: string) {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date} : item
+      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date, dueTime: time} : item
     );
     setItemList(updatedItemList);
   }
@@ -95,16 +102,17 @@ return (
            <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
             <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
             <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
+            <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
             {error && <p className="error-message">{error}</p>}
             <div>
               <Button label='Confirm' onClick={() => {
-                    addTache(tache, description, dueDate || '');
+                    addTache(tache, description, dueDate, dueTime || '');
                   } } children={undefined} />
               <Button label='Cancel' onClick={() => {
                     setAddTask(false);
                     setTache("");
                     setDescription("");
-                    setDueDate(undefined);
+                    setDueDate("");
                     setError(null);
                   } } children={undefined} />
             </div>

@@ -37,6 +37,7 @@ function App() {
   const dateTime = new Date().toISOString().split('T')[0];
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
   const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
+  const [priority, setPriority] = useState('medium');
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -234,10 +235,15 @@ function App() {
                     <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
                     <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
                     <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
+                    <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
                     {error && <p className="error-message">{error}</p>}
                     <div>
                       <Button label='Confirm' onClick={() => {
-                            addTache(tache, description, dueDate, dueTime || '');
+                            addTache(tache, description, dueDate, dueTime || '', priority);
                           } } children={undefined} />
                       <Button label='Cancel' onClick={() => {
                             setAddTask(false);
@@ -245,6 +251,7 @@ function App() {
                             setDescription("");
                             setDueDate("");
                             setError(null);
+                            setPriority("low");
                           } } children={undefined} />
                     </div>
                 </div>

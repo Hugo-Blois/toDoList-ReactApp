@@ -164,10 +164,10 @@ return (
     {
       addTask === true ? 
         <div className='add-task'>
-           <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
+            <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
             <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
             <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
-            <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
+            <input type="time" value={dueTime || ''} onChange={onChangeDueTime}></input>
             {error && <p className="error-message">{error}</p>}
             <div>
               <Button label='Confirm' onClick={() => {

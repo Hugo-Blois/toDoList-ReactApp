@@ -25,6 +25,10 @@
     font-size: 16px;
     width: 33%;
   }
+
+  .item-due{
+    margin-left: 40px;
+  }
   
 .button {
     background-color: #0074d9; /* Couleur bleue */

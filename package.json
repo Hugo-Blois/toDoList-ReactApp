@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "fuse.js": "^7.0.0",
-    "react-calendar": "^4.7.0"
-  }
-}

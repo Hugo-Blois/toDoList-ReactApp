@@ -21,6 +21,7 @@ interface ListItem {
   done: boolean;
   dueDate: string;
   dueTime: string;
+  priority: 'low' | 'medium' | 'high';
 }
 
 function App() {
@@ -34,7 +35,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const dateTime = new Date().toISOString().split('T')[0];
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
   const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
 
@@ -55,9 +55,16 @@ function App() {
     setDueTime(time);
   }
 
-  function addTache(tache: string, description: string, dueDate: string, dueTime: string) {
+  function addTache(tache: string, description: string, dueDate: string, dueTime: string, priority: 'low' | 'medium' | 'high') {
     if (tache != "" && description != "" && dueDate != "" && dueTime != ""){
-      const newItemList = [...itemList, { id: itemList.length + 1, title: tache, content: description, done: false, dueDate, dueTime }];
+      const newItemList = [...itemList, { 
+        id: itemList.length + 1, 
+        title: tache, 
+        content: description, 
+        done: false, 
+        dueDate, dueTime ,
+        priority: priority
+      }];
       setItemList(newItemList);
       setTache('');
       setDescription('');

@@ -3,6 +3,7 @@ import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 interface ListItem {
   id: number;
@@ -68,6 +69,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           onChange={() => onToggleDone(item.id)}
           style={{ marginRight: '30px' }}
         />
+
+        <div>
+          {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
+          {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
+          {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
+        </div>
 
         {isEditing ? (
           <>

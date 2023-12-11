@@ -36,8 +36,9 @@ function App() {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const dateTime = new Date().toISOString().split('T')[0];
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
-  const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
-  const [priority, setPriority] = useState('medium');
+  const [selectedTask, setSelectedTask] = useState<ListItem | null>(null);
+  type TaskPriority = "low" | "medium" | "high";
+  const [priority, setPriority] = useState<TaskPriority>('low');
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -72,6 +73,7 @@ function App() {
       setDueDate("");
       setDueTime("")
       setAddTask(false);
+      setPriority('low')
     }else {
       setError("Fields cannot be empty");
     }
@@ -235,7 +237,8 @@ function App() {
                     <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
                     <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
                     <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
-                    <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
+                    <label htmlFor="priority">Priority:</label>
+                    <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
                       <option value="low">Low</option>
                       <option value="medium">Medium</option>
                       <option value="high">High</option>

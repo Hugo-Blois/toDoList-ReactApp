@@ -101,8 +101,8 @@ function filterTasks(items: ListItem[]): ListItem[] {
   
 return (
   <div className="App">
-    <h1>Todo List</h1>
-
+    <div className='navbar'>
+      <h1>Todo List</h1>
       <div className="tabs">
         <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
           Calendar
@@ -110,7 +110,8 @@ return (
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
         </button>
-      </div>
+      </div>  
+    </div>
 
       {activeTab === 'calendar' && (
         <div>
@@ -120,7 +121,8 @@ return (
       )}
 
       {activeTab === 'tasks' && (
-        <div >
+      <div >
+        <div className='navbartasks'>
           <h2>Tasks</h2>
           <button onClick={() => {
             setSearchTerm(""); // Réinitialiser la valeur du champ de recherche
@@ -138,9 +140,10 @@ return (
             />
           </div>
         )}
+      </div>
     <div className="task-section">
       <div className="grid-container">
-      <div className="grid-item">
+        <div className="grid-item">
           <h2>Today</h2>
           <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate === dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
         </div>

@@ -8,7 +8,6 @@ interface ListItem {
   done: boolean;
   dueDate?: string;
   dueTime?: string;
-  priority: 'low' | 'medium' | 'high';
 }
 
 interface ListProps {

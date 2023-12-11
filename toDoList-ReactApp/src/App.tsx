@@ -21,7 +21,6 @@ interface ListItem {
   done: boolean;
   dueDate: string;
   dueTime: string;
-  priority: 'low' | 'medium' | 'high';
 }
 
 function App() {
@@ -37,7 +36,6 @@ function App() {
   const dateTime = new Date().toISOString().split('T')[0];
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
   const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
-  const [priority, setPriority] = useState('medium');
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -56,7 +54,7 @@ function App() {
     setDueTime(time);
   }
 
-  function addTache(tache: string, description: string, dueDate: string, dueTime: string, priority: 'low' | 'medium' | 'high') {
+  function addTache(tache: string, description: string, dueDate: string, dueTime: string) {
     if (tache != "" && description != "" && dueDate != "" && dueTime != ""){
       const newItemList = [...itemList, { 
         id: itemList.length + 1, 
@@ -64,7 +62,6 @@ function App() {
         content: description, 
         done: false, 
         dueDate, dueTime ,
-        priority: priority
       }];
       setItemList(newItemList);
       setTache('');

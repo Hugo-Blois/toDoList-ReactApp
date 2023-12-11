@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -99,7 +99,7 @@ function App() {
     setItemList(updatedItemList);
   }
 
-  function filterTasks(items: ListItem[]): ListItem[] {
+function filterTasks(items: ListItem[]): ListItem[] {
     if (!searchTerm) {
       return items;
     }
@@ -145,10 +145,10 @@ function App() {
     }
   }
   
-  return (
-    <div className="App">
+return (
+  <div className="App">
+    <div className='navbar'>
       <h1>Todo List</h1>
-
       <div className="tabs">
         <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
           Calendar
@@ -156,7 +156,8 @@ function App() {
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
         </button>
-      </div>
+      </div>  
+    </div>
 
       {activeTab === 'calendar' && (
         <div className="demo-app-main">
@@ -192,7 +193,8 @@ function App() {
       )}
 
       {activeTab === 'tasks' && (
-        <div >
+      <div >
+        <div className='navbartasks'>
           <h2>Tasks</h2>
           <button onClick={() => {
             setSearchTerm(""); // Réinitialiser la valeur du champ de recherche
@@ -210,7 +212,8 @@ function App() {
             />
           </div>
         )}
-          <div className="task-section">
+      </div>
+      <div className="task-section">
           <div className="grid-container">
             <div className="grid-item">
                   <h2>Today</h2>
@@ -263,8 +266,8 @@ function App() {
                   <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
                 </div>
             }
-        </div>
-      )}
+  </div>
+)}
     </div>
 );
 

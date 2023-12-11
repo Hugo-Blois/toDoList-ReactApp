@@ -38,7 +38,8 @@ function App() {
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
   const [selectedTask, setSelectedTask] = useState<ListItem | null>(null);
   type TaskPriority = "low" | "medium" | "high";
-  const [priority, setPriority] = useState<TaskPriority>('low');
+  const [priority, setPriority] = useState<TaskPriority>('low');  
+  const [selectedPriority, setSelectedPriority] = useState<TaskPriority | null>(null);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -104,15 +105,25 @@ function filterTasks(items: ListItem[]): ListItem[] {
       return items;
     }
   
-    const options = {
-      keys: ['title', 'content'],
-      threshold: 0.3,
-    };
+    let filteredItems = items;
+
+    if (searchTerm) {
+      const options = {
+        keys: ['title', 'content'],
+        threshold: 0.3,
+      };
   
-    const fuse = new Fuse(items, options);
-    const result = fuse.search(searchTerm);
+      const fuse = new Fuse(filteredItems, options);
+      const result = fuse.search(searchTerm);
   
-    return result.map((item) => item.item);
+      filteredItems = result.map((item) => item.item);
+    }
+
+    if (selectedPriority) {
+      filteredItems = filteredItems.filter((item) => item.priority === selectedPriority);
+    }
+  
+    return filteredItems;
   }
 
   function mapTasksToEvents(tasks: ListItem[]): any[] {
@@ -144,6 +155,21 @@ function filterTasks(items: ListItem[]): ListItem[] {
       setSelectedTask(null);
     }
   }
+
+  function filterByPriority(priority: TaskPriority | null) {
+    setSelectedPriority(priority);
+  }
+
+  const renderPriorityButton = (priority: TaskPriority, label: string, icon: any) => (
+    <button
+      key={priority}
+      className={selectedPriority === priority ? 'active' : ''}
+      onClick={() => filterByPriority(selectedPriority === priority ? null : priority)}
+    >
+      {label}
+      <FontAwesomeIcon icon={icon} />
+    </button>
+  );
   
 return (
   <div className="App">
@@ -210,6 +236,11 @@ return (
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+            <div className="priority-filters">
+              {renderPriorityButton('low', 'Low', faSearch)}
+              {renderPriorityButton('medium', 'Medium', faSearch)}
+              {renderPriorityButton('high', 'High', faSearch)}
+            </div>
           </div>
         )}
       </div>

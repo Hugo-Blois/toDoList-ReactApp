@@ -4,9 +4,15 @@ import Button from './Button';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import {
+  EventClickArg
+} from "@fullcalendar/core";
 
 interface ListItem {
   id: number;
@@ -30,6 +36,7 @@ function App() {
   const dateTime = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
+  const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -97,7 +104,36 @@ function App() {
   
     return result.map((item) => item.item);
   }
-  
+
+  function mapTasksToEvents(tasks: ListItem[]): any[] {
+    return tasks.map((task) => ({
+      title: task.title,
+      start: `${task.dueDate}T${task.dueTime}`,
+      allDay: false
+    }));
+  }
+
+  function handleEventClick(clickInfo: EventClickArg) {
+    const taskTitle = clickInfo.event.title;
+
+    // Trouver la tâche correspondante dans la liste
+    const clickedTask = itemList.find((task) => task.title === taskTitle);
+
+    // Mettre à jour la tâche sélectionnée
+    if (clickedTask) {
+      // Vérifier si la tâche cliquée est déjà la tâche sélectionnée
+      if (selectedTask && selectedTask.id === clickedTask.id) {
+        // Si c'est le cas, désélectionnez la tâche en mettant selectedTask à null
+        setSelectedTask(null);
+      } else {
+        // Sinon, sélectionnez la tâche cliquée
+        setSelectedTask(clickedTask);
+      }
+    } else {
+      // Si aucune tâche n'est associée à l'événement, désélectionnez la tâche en mettant selectedTask à null
+      setSelectedTask(null);
+    }
+  }
   
   return (
     <div className="App">
@@ -113,10 +149,36 @@ function App() {
       </div>
 
       {activeTab === 'calendar' && (
-        <div>
-          <h2>Calendar</h2>
-          <Calendar className='react-calendar' value={selectedDate} />
-        </div>
+        <div className="demo-app-main">
+        {selectedTask && (
+          <div>
+            <h3>Selected Task</h3>
+            <p>Title: {selectedTask.title}</p>
+            <p>Description: {selectedTask.content}</p>
+            {/* Ajoutez d'autres champs de tâche si nécessaire */}
+          </div>
+        )}
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          dayMaxEvents={true}
+          events={mapTasksToEvents(itemList)}
+          eventTimeFormat={{
+            hour: 'numeric',
+            minute: '2-digit',
+            meridiem: false,
+          }}
+          eventClick={handleEventClick}
+        />
+      </div>
       )}
 
       {activeTab === 'tasks' && (

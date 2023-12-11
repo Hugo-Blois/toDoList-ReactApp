@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Fuse from 'fuse.js'
 
 interface ListItem {
   id: number;
@@ -82,13 +83,22 @@ function App() {
   }
 
   function filterTasks(items: ListItem[]): ListItem[] {
-    return items.filter((item) =>
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (!searchTerm) {
+      return items;
+    }
+  
+    const options = {
+      keys: ['title', 'content'],
+      threshold: 0.3,
+    };
+  
+    const fuse = new Fuse(items, options);
+    const result = fuse.search(searchTerm);
+  
+    return result.map((item) => item.item);
   }
   
-
+  
   return (
     <div className="App">
       <h1>Todo List</h1>

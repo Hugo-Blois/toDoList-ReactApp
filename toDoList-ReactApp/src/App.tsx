@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
-import FullCalendar from 'fullcalendar';
+import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -34,7 +34,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const dateTime = new Date().toISOString().split('T')[0];
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [activeTab, setActiveTab] = useState<string>('tasks'); 
   const [selectedTask, setSelectedTask] = useState<ListItem | null>(null); // Ajout de la propriété selectedTask
 

@@ -54,7 +54,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
         padding: '10px',
         marginBottom: '10px',
-        width: '40vw',
+        width: '90%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -105,7 +105,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           </>
         ) : (
           <>
-            <span className="item-title" style={{ marginRight: '50px', textDecoration: item.done ? 'line-through' : 'none' }}>
+            <span className="item-title" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
               {item.title}
             </span>
             <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>

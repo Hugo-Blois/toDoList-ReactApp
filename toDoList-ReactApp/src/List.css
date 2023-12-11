@@ -15,10 +15,6 @@
   .item-title {
     font-weight: bold;
   }
-  
-  .item-content {
-    margin-left: 10px;
-  }
 
   .item-onedit{
     font-style: italic;
@@ -27,7 +23,7 @@
   }
 
   .item-due{
-    margin-left: 40px;
+    margin-left: 20px;
   }
   
 .button {

@@ -89,7 +89,7 @@ function App() {
     setItemList(updatedItemList);
   }
 
-  function filterTasks(items: ListItem[]): ListItem[] {
+function filterTasks(items: ListItem[]): ListItem[] {
     if (!searchTerm) {
       return items;
     }
@@ -135,10 +135,10 @@ function App() {
     }
   }
   
-  return (
-    <div className="App">
+return (
+  <div className="App">
+    <div className='navbar'>
       <h1>Todo List</h1>
-
       <div className="tabs">
         <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
           Calendar
@@ -146,7 +146,8 @@ function App() {
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
         </button>
-      </div>
+      </div>  
+    </div>
 
       {activeTab === 'calendar' && (
         <div className="demo-app-main">
@@ -182,7 +183,8 @@ function App() {
       )}
 
       {activeTab === 'tasks' && (
-        <div >
+      <div >
+        <div className='navbartasks'>
           <h2>Tasks</h2>
           <button onClick={() => {
             setSearchTerm(""); // Réinitialiser la valeur du champ de recherche
@@ -200,54 +202,55 @@ function App() {
             />
           </div>
         )}
-          <div className="task-section">
-          <div className="grid-container">
-            <div className="grid-item">
-                  <h2>Today</h2>
-                  <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate === dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-                </div>
-                <div className="grid-item">
-                  <h2>Active Tasks</h2>
-                  <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate > dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-                </div>
-                <div className="grid-item">
-                  <h2>Completed Tasks</h2>
-                  <List items={filterTasks(itemList.filter((item) => item.done))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} />
-                </div>
-                <div className="grid-item">
-                  <h2>Expired Tasks</h2>
-                  <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate < dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
-                </div>
-              </div>
-              </div>
-              {
-                addTask === true ? 
-                <div className='add-task'>
-                  <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
-                    <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
-                    <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
-                    <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
-                    {error && <p className="error-message">{error}</p>}
-                    <div>
-                      <Button label='Confirm' onClick={() => {
-                            addTache(tache, description, dueDate, dueTime || '');
-                          } } children={undefined} />
-                      <Button label='Cancel' onClick={() => {
-                            setAddTask(false);
-                            setTache("");
-                            setDescription("");
-                            setDueDate("");
-                            setError(null);
-                          } } children={undefined} />
-                    </div>
-                </div>
-                :
-                <div className='add-task'>
-                  <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
-                </div>
-            }
+      </div>
+    <div className="task-section">
+      <div className="grid-container">
+        <div className="grid-item">
+          <h2>Today</h2>
+          <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate === dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
         </div>
-      )}
+        <div className="grid-item">
+          <h2>Active Tasks</h2>
+          <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate > dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        </div>
+        <div className="grid-item">
+          <h2>Completed Tasks</h2>
+          <List items={filterTasks(itemList.filter((item) => item.done))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone} />
+        </div>
+        <div className="grid-item">
+          <h2>Expired Tasks</h2>
+          <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate < dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
+        </div>
+      </div>
+    </div>
+    {
+      addTask === true ? 
+        <div className='add-task'>
+            <input type="text" placeholder='Title' value={tache} onChange={ onChangeTache }></input>
+            <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
+            <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
+            <input type="time" value={dueTime || ''} onChange={onChangeDueTime}></input>
+            {error && <p className="error-message">{error}</p>}
+            <div>
+              <Button label='Confirm' onClick={() => {
+                    addTache(tache, description, dueDate, dueTime || '');
+                  } } children={undefined} />
+              <Button label='Cancel' onClick={() => {
+                    setAddTask(false);
+                    setTache("");
+                    setDescription("");
+                    setDueDate("");
+                    setError(null);
+                  } } children={undefined} />
+            </div>
+        </div>
+        :
+        <div className='add-task'>
+          <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
+        </div>
+    }
+  </div>
+)}
     </div>
 );
 

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
-import FullCalendar from 'fullcalendar';
+import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";

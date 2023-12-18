@@ -1,7 +1,7 @@
 import './App.css';
 import List from './List';
 import Button from './Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
@@ -26,7 +26,10 @@ interface ListItem {
 
 function App() {
   const [addTask, setAddTask] = useState<boolean>(false);
-  const [itemList, setItemList] = useState<ListItem[]>([]);
+  const [itemList, setItemList] = useState<ListItem[]>(() => {
+    const storedItemList = localStorage.getItem('itemList');
+    return storedItemList ? JSON.parse(storedItemList) : [];
+  });
   const [tache, setTache] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [dueDate, setDueDate] = useState<string>("");
@@ -40,6 +43,10 @@ function App() {
   type TaskPriority = "low" | "medium" | "high";
   const [priority, setPriority] = useState<TaskPriority>('low');  
   const [selectedPriority, setSelectedPriority] = useState<TaskPriority | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('itemList', JSON.stringify(itemList));
+  }, [itemList]);
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
@@ -75,6 +82,7 @@ function App() {
       setDueTime("")
       setAddTask(false);
       setPriority('low')
+      setItemList(newItemList);
     }else {
       setError("Fields cannot be empty");
     }
@@ -115,7 +123,6 @@ function filterTasks(items: ListItem[]): ListItem[] {
       filteredItems = result.map((item) => item.item);
     }
 
-    console.log(selectedPriority)
     if (selectedPriority) {
       const options = {
         keys: ['priority'],
@@ -126,7 +133,6 @@ function filterTasks(items: ListItem[]): ListItem[] {
       const result = fuse.search(selectedPriority);
   
       filteredItems = result.map((item) => item.item);
-      console.log(filteredItems)
     }
   
     return filteredItems;

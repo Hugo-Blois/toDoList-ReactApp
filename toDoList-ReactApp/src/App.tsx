@@ -101,10 +101,6 @@ function App() {
   }
 
 function filterTasks(items: ListItem[]): ListItem[] {
-    if (!searchTerm) {
-      return items;
-    }
-  
     let filteredItems = items;
 
     if (searchTerm) {
@@ -119,13 +115,24 @@ function filterTasks(items: ListItem[]): ListItem[] {
       filteredItems = result.map((item) => item.item);
     }
 
+    console.log(selectedPriority)
     if (selectedPriority) {
-      filteredItems = filteredItems.filter((item) => item.priority === selectedPriority);
+      const options = {
+        keys: ['priority'],
+        threshold: 1,
+      };
+  
+      const fuse = new Fuse(filteredItems, options);
+      const result = fuse.search(selectedPriority);
+  
+      filteredItems = result.map((item) => item.item);
+      console.log(filteredItems)
     }
   
     return filteredItems;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function mapTasksToEvents(tasks: ListItem[]): any[] {
     return tasks.map((task) => ({
       title: task.title,
@@ -137,21 +144,15 @@ function filterTasks(items: ListItem[]): ListItem[] {
   function handleEventClick(clickInfo: EventClickArg) {
     const taskTitle = clickInfo.event.title;
 
-    // Trouver la tâche correspondante dans la liste
     const clickedTask = itemList.find((task) => task.title === taskTitle);
 
-    // Mettre à jour la tâche sélectionnée
     if (clickedTask) {
-      // Vérifier si la tâche cliquée est déjà la tâche sélectionnée
       if (selectedTask && selectedTask.id === clickedTask.id) {
-        // Si c'est le cas, désélectionnez la tâche en mettant selectedTask à null
         setSelectedTask(null);
       } else {
-        // Sinon, sélectionnez la tâche cliquée
         setSelectedTask(clickedTask);
       }
     } else {
-      // Si aucune tâche n'est associée à l'événement, désélectionnez la tâche en mettant selectedTask à null
       setSelectedTask(null);
     }
   }
@@ -160,6 +161,7 @@ function filterTasks(items: ListItem[]): ListItem[] {
     setSelectedPriority(priority);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderPriorityButton = (priority: TaskPriority, label: string, icon: any) => (
     <button
       key={priority}
@@ -192,7 +194,6 @@ return (
             <h3>Selected Task</h3>
             <p>Title: {selectedTask.title}</p>
             <p>Description: {selectedTask.content}</p>
-            {/* Ajoutez d'autres champs de tâche si nécessaire */}
           </div>
         )}
         <FullCalendar
@@ -223,8 +224,8 @@ return (
         <div className='navbartasks'>
           <h2>Tasks</h2>
           <button onClick={() => {
-            setSearchTerm(""); // Réinitialiser la valeur du champ de recherche
-            setShowSearch(!showSearch); // Inverser l'état de visibilité du champ de recherche
+            setSearchTerm(""); 
+            setShowSearch(!showSearch); 
           }}>
             <FontAwesomeIcon icon={faSearch} />
           </button> 

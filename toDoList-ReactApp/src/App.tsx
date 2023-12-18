@@ -195,13 +195,6 @@ return (
 
       {activeTab === 'calendar' && (
         <div className="demo-app-main">
-        {selectedTask && (
-          <div>
-            <h3>Selected Task</h3>
-            <p>Title: {selectedTask.title}</p>
-            <p>Description: {selectedTask.content}</p>
-          </div>
-        )}
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -222,6 +215,14 @@ return (
           }}
           eventClick={handleEventClick}
         />
+        
+        {selectedTask && (
+          <div>
+            <h3>Selected Task</h3>
+            <p>Title: {selectedTask.title}</p>
+            <p>Description: {selectedTask.content}</p>
+          </div>
+        )}
       </div>
       )}
 

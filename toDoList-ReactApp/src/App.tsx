@@ -13,6 +13,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import {
   EventClickArg
 } from "@fullcalendar/core";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 interface ListItem {
   id: number;
@@ -43,6 +46,26 @@ function App() {
   type TaskPriority = "low" | "medium" | "high";
   const [priority, setPriority] = useState<TaskPriority>('low');  
   const [selectedPriority, setSelectedPriority] = useState<TaskPriority | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
+
+  const modalStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      color: 'black', // Couleur du texte
+      textAlign: 'center', // Centrage du texte
+    },
+  };
+
+  const closeModal = () => {
+    setTaskToDeleteId(null);
+    setConfirmDelete(false);
+  };
 
   useEffect(() => {
     localStorage.setItem('itemList', JSON.stringify(itemList));
@@ -88,11 +111,20 @@ function App() {
     }
   }
   
-
   function deleteTache(id: number) {
-    const updatedItemList = itemList.filter((item) => item.id !== id);
-    setItemList(updatedItemList);
+    setTaskToDeleteId(id);
+    setConfirmDelete(true);
   }
+
+  function confirmDeleteTask() {
+    if (taskToDeleteId !== null) {
+      const updatedItemList = itemList.filter((item) => item.id !== taskToDeleteId);
+      setItemList(updatedItemList);
+      setTaskToDeleteId(null);
+      setConfirmDelete(false);
+    }
+  }
+  
 
   function editTache(id: number, newTitle: string, newContent: string, date: string, time: string) {
     const updatedItemList = itemList.map((item) =>
@@ -270,6 +302,18 @@ return (
                   <h2>Expired Tasks</h2>
                   <List items={filterTasks(itemList.filter((item) => !item.done && item.dueDate < dateTime))} onDelete={deleteTache} onEdit={editTache} onToggleDone={toggleDone}/>
                 </div>
+                <Modal
+                  isOpen={confirmDelete}
+                  onRequestClose={closeModal}
+                  style={modalStyles}
+                  contentLabel="Confirm Delete Modal"
+                >
+                  <p>Delete this task?</p>
+                  <div>
+                    <Button label="Cancel" onClick={closeModal} children={undefined} />
+                    <Button label="Delete" onClick={confirmDeleteTask} children={undefined} />
+                  </div>
+                </Modal>
               </div>
               </div>
               {

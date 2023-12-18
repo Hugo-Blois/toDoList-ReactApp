@@ -14,6 +14,7 @@ import {
   EventClickArg
 } from "@fullcalendar/core";
 import Modal from 'react-modal';
+import Stats from './Stats';
 
 Modal.setAppElement('#root');
 
@@ -222,6 +223,9 @@ return (
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
         </button>
+        <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>
+          Statistics
+        </button>
       </div>  
     </div>
 
@@ -256,6 +260,13 @@ return (
           </div>
         )}
       </div>
+      )}
+
+      {activeTab === 'stats' && (
+        <div>
+          <h2>Nombre de tâches: {itemList.length}</h2>
+         <Stats tasks={itemList} />
+        </div>
       )}
 
       {activeTab === 'tasks' && (

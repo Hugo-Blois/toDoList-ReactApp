@@ -183,15 +183,31 @@ function filterTasks(items: ListItem[]): ListItem[] {
     }
   }  
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   function mapTasksToEvents(tasks: ListItem[]): any[] {
-    return tasks.map((task) => ({
+  return tasks.map((task) => {
+    const eventClass = getPriorityClass(task.priority); // Classe de priorité
+
+    if (task.done) {
+      // Ajoutez la classe de style pour les tâches complétées
+      return {
+        title: task.title,
+        start: `${task.dueDate}T${task.dueTime}`,
+        allDay: false,
+        className: `${eventClass} completed-task`, // Ajoutez cette ligne
+      };
+    }
+
+    // Pour les tâches non complétées, utilisez la classe normale
+    return {
       title: task.title,
       start: `${task.dueDate}T${task.dueTime}`,
       allDay: false,
-      className: getPriorityClass(task.priority), // Ajoutez cette ligne
-    }));
-  }
+      className: eventClass, // Ajoutez cette ligne
+    };
+  });
+}
+
   
 
   function handleEventClick(clickInfo: EventClickArg) {

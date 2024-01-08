@@ -25,6 +25,7 @@ interface ListItem {
   done: boolean;
   dueDate: string;
   dueTime: string;
+  priority: 'low' | 'medium' | 'high';
 }
 
 function App() {
@@ -88,14 +89,14 @@ function App() {
     setDueTime(time);
   }
 
-  function addTache(tache: string, description: string, dueDate: string, dueTime: string) {
+  function addTache(tache: string, description: string, dueDate: string, dueTime: string, priority: 'low' | 'medium' | 'high') {
     if (tache != "" && description != "" && dueDate != "" && dueTime != ""){
       const newItemList = [...itemList, { 
         id: itemList.length + 1, 
         title: tache, 
         content: description, 
         done: false, 
-        dueDate, dueTime ,
+        dueDate, dueTime , priority
       }];
       setItemList(newItemList);
       setTache('');
@@ -125,9 +126,9 @@ function App() {
   }
   
 
-  function editTache(id: number, newTitle: string, newContent: string, date: string, time: string) {
+  function editTache(id: number, newTitle: string, newContent: string, date: string, time: string, priority: 'low' | 'medium' | 'high') {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date, dueTime: time} : item
+      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date, dueTime: time, priority: priority} : item
     );
     setItemList(updatedItemList);
   }
@@ -332,12 +333,14 @@ return (
                     <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
                     <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
                     <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
-                    <label htmlFor="priority">Priority:</label>
-                    <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
+                    <div className="label-select-container">
+                      <label htmlFor="priority">Priority:</label>
+                      <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
                     {error && <p className="error-message">{error}</p>}
                     <div>
                       <Button label='Confirm' onClick={() => {

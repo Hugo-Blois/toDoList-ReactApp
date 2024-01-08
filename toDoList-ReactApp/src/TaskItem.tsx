@@ -12,21 +12,24 @@ interface ListItem {
   done: boolean;
   dueDate?: string;
   dueTime?: string;
+  priority: 'low' | 'medium' | 'high';
 }
 
 interface TaskItemProps {
   item: ListItem;
   onToggleDone: (id: number) => void;
   onDelete: (id: number) => void;
-  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string, priority: "low" | "medium" | "high") => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
+const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(item.title);
   const [editedContent, setEditedContent] = useState(item.content);
   const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
   const [editedDueTime, setEditedDueTime] = useState(item.dueTime || '');
+  const [editedPriority, setEditPriority] = useState(item.priority);
+  type TaskPriority = "low" | "medium" | "high";
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -42,7 +45,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime);
+    onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime, editedPriority);
   };
 
   return (
@@ -69,14 +72,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           style={{ marginRight: '30px' }}
         />
 
-        <div>
-          {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
-          {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
-          {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
-        </div>
-
         {isEditing ? (
           <>
+
+          <select id="priority" value={editedPriority} onChange={(e) => setEditPriority(e.target.value as TaskPriority)}>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+          </select>
+
           <input
             className="item-onedit"
             type="text"
@@ -112,7 +116,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           </>
         ) : (
           <>
-            <span className="item-title" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
+            <div>
+            {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
+            {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
+            {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
+            </div>
+            <span className="item-title item-due" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
               {item.title}
             </span>
             <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>

@@ -19,10 +19,10 @@ interface TaskItemProps {
   item: ListItem;
   onToggleDone: (id: number) => void;
   onDelete: (id: number) => void;
-  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string, priority: "low" | "medium" | "high") => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit }) => {
+const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdit}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(item.title);
   const [editedContent, setEditedContent] = useState(item.content);
@@ -30,6 +30,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
   const [editedDueTime, setEditedDueTime] = useState(item.dueTime || '');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [editedPriority, setEditPriority] = useState(item.priority);
+  type TaskPriority = "low" | "medium" | "high";
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -45,7 +47,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
 
   const handleSaveClick = () => {
     setIsEditing(false);
-    onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime);
+    onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime, editedPriority);
   };
 
   const closeModal = () => {
@@ -78,14 +80,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           style={{ marginRight: '30px' }}
         />
 
-        <div>
-          {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
-          {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
-          {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
-        </div>
-
         {isEditing ? (
           <>
+
+          <select id="priority" value={editedPriority} onChange={(e) => setEditPriority(e.target.value as TaskPriority)}>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+          </select>
+
           <input
             className="item-onedit"
             type="text"
@@ -126,9 +129,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
               style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}
               onClick={() => setIsPopupOpen(true)}
               onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}>
-              {item.title}
-            </span>
+              onMouseLeave={() => setIsHovered(false)}></span>
             <span 
               className="item-content" 
               style={{ textDecoration: item.done ? 'line-through' : 'none' }}
@@ -137,6 +138,15 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
               onMouseLeave={() => setIsHovered(false)}>
               {item.content}
             </span>
+            <div>
+              {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
+              {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
+              {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
+            </div>
+            <span className="item-title item-due" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
+              {item.title}
+            </span>
+
             {item.dueDate && item.dueTime &&(
               <span 
                 className="item-due"

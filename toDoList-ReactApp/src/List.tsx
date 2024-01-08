@@ -15,7 +15,7 @@ interface ListProps {
   items: ListItem[];
   onDelete: (id: number) => void;
 
-  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string) => void;
+  onEdit: (id: number, newTitle: string, newContent: string, date: string, time: string, priority: 'low' | 'medium' | 'high') => void;
   onToggleDone: (id: number) => void;
 }
 

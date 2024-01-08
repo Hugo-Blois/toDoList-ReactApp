@@ -135,3 +135,50 @@
   border: none;
   border-radius: 8px;
 }
+
+/*  CSS du select priority  */
+
+.label-select-container {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.label-select-container label {
+  margin-right: 30px; 
+}
+
+.label-select-container select {
+  flex: 1; 
+}
+
+
+/* CSS du Calendrier */
+.fc-col-header-cell-cushion{
+  color: white;
+}
+.fc-daygrid-day-number{
+  color: white;
+}
+.fc-daygrid-dot-event{
+  color: white;
+}
+.fc-button-group button{
+  margin: 10px;
+  background-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
+.low-priority .fc-daygrid-event-dot {
+  border-color: green;
+}
+
+.medium-priority .fc-daygrid-event-dot {
+  border-color: orange;
+}
+
+.high-priority .fc-daygrid-event-dot{
+  border-color: red;
+}
+
+

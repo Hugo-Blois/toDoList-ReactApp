@@ -96,8 +96,7 @@ function App() {
         title: tache, 
         content: description, 
         done: false, 
-        dueDate, dueTime ,
-        priority: priority
+        dueDate, dueTime , priority
       }];
       setItemList(newItemList);
       setTache('');
@@ -127,9 +126,9 @@ function App() {
   }
   
 
-  function editTache(id: number, newTitle: string, newContent: string, date: string, time: string) {
+  function editTache(id: number, newTitle: string, newContent: string, date: string, time: string, priority: 'low' | 'medium' | 'high') {
     const updatedItemList = itemList.map((item) =>
-      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date, dueTime: time} : item
+      item.id === id ? { ...item, title: newTitle, content: newContent, dueDate: date, dueTime: time, priority: priority} : item
     );
     setItemList(updatedItemList);
   }
@@ -171,14 +170,29 @@ function filterTasks(items: ListItem[]): ListItem[] {
     return filteredItems;
   }
 
+  function getPriorityClass(priority: TaskPriority): string {
+    switch (priority) {
+      case 'low':
+        return 'low-priority';
+      case 'medium':
+        return 'medium-priority';
+      case 'high':
+        return 'high-priority';
+      default:
+        return '';
+    }
+  }  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function mapTasksToEvents(tasks: ListItem[]): any[] {
     return tasks.map((task) => ({
       title: task.title,
       start: `${task.dueDate}T${task.dueTime}`,
-      allDay: false
+      allDay: false,
+      className: getPriorityClass(task.priority), // Ajoutez cette ligne
     }));
   }
+  
 
   function handleEventClick(clickInfo: EventClickArg) {
     const taskTitle = clickInfo.event.title;
@@ -217,11 +231,11 @@ return (
     <div className='navbar'>
       <h1>Todo List</h1>
       <div className="tabs">
-        <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
-          Calendar
-        </button>
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
+        </button>
+        <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
+          Calendar
         </button>
         <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>
           Statistics
@@ -334,12 +348,14 @@ return (
                     <input type="text" placeholder='Description' value={description} onChange={ onChangeDescription }></input>
                     <input type="date" placeholder="Expiry date" value={dueDate || ''} onChange={onChangeDueDate}></input>
                     <input type="time"  value={dueTime || ''} onChange={onChangeDueTime}></input>
-                    <label htmlFor="priority">Priority:</label>
-                    <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
-                    </select>
+                    <div className="label-select-container">
+                      <label htmlFor="priority">Priority:</label>
+                      <select id="priority" value={priority} onChange={(e) => setPriority(e.target.value as TaskPriority)}>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
                     {error && <p className="error-message">{error}</p>}
                     <div>
                       <Button label='Confirm' onClick={() => {

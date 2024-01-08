@@ -13,7 +13,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import {
   EventClickArg
 } from "@fullcalendar/core";
-import Modal from 'react-modal';
+import Modal, { Styles } from 'react-modal';
 import Stats from './Stats';
 
 Modal.setAppElement('#root');
@@ -50,7 +50,7 @@ function App() {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
 
-  const modalStyles = {
+  const modalStyles: Styles = {
     content: {
       top: '50%',
       left: '50%',

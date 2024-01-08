@@ -1,4 +1,3 @@
-import React from 'react';
 import {Chart,ArcElement, Tooltip, Legend} from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
@@ -17,8 +16,8 @@ Chart.register(ArcElement, Tooltip, Legend)
 const Stats = ({ tasks }: { tasks: ListItem[] }) => {
   const calculateChartData = (tasks: ListItem[]) => {
     const completedTasks = tasks.filter((task) => task.done).length;
-    const activeTasks = tasks.filter((task) => !task.done && new Date(task.dueDate) > new Date() && new Date(task.dueDate).toDateString() !== new Date().toDateString()).length;
-    const expiredTasks = tasks.filter((task) => !task.done && new Date(task.dueDate) < new Date()).length;
+    const activeTasks = tasks.filter((task) => !task.done && new Date(task.dueDate) > new Date() || new Date(task.dueDate).toDateString() == new Date().toDateString()).length;
+    const expiredTasks = tasks.filter((task) => !task.done && new Date(task.dueDate) < new Date() && new Date(task.dueDate).toDateString() !== new Date().toDateString()).length;
 
     return {
       labels: ['Completed', 'Active', 'Expired'],

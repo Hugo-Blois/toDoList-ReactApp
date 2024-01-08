@@ -191,4 +191,11 @@
   border-color: red;
 }
 
+.completed-task {
+  text-decoration: line-through;
+  opacity: 0.6; 
+}
+.completed-task div{
+  text-decoration: line-through;
+}
 

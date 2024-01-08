@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Button from './Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEdit, faTrash, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import TaskPopup from './TaskPopUp';
 
 interface ListItem {
   id: number;
@@ -28,6 +28,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
   const [editedContent, setEditedContent] = useState(item.content);
   const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
   const [editedDueTime, setEditedDueTime] = useState(item.dueTime || '');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -46,6 +48,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
     onEdit(item.id, editedTitle, editedContent, editedDueDate, editedDueTime);
   };
 
+  const closeModal = () => {
+    setIsPopupOpen(false)
+  };
+
   return (
     <li
       key={item.id}
@@ -53,16 +59,18 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
       style={{
         border: '2px',
         borderRadius: '8px',
-        backgroundColor: 'rgba(0, 0, 0, 0.2)',
         padding: '10px',
         marginBottom: '10px',
         width: '90%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        cursor: isHovered ? 'pointer' : 'default',
+        backgroundColor: isHovered ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.2)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
+      <div 
+        style={{ display: 'flex', alignItems: 'center', marginLeft: '5px' }}>
         <input
           type="checkbox"
           checked={item.done}
@@ -113,14 +121,31 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           </>
         ) : (
           <>
-            <span className="item-title" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
+            <span 
+              className="item-title" 
+              style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}
+              onClick={() => setIsPopupOpen(true)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}>
               {item.title}
             </span>
-            <span className="item-content" style={{ textDecoration: item.done ? 'line-through' : 'none' }}>
+            <span 
+              className="item-content" 
+              style={{ textDecoration: item.done ? 'line-through' : 'none' }}
+              onClick={() => setIsPopupOpen(true)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}>
               {item.content}
             </span>
             {item.dueDate && item.dueTime &&(
-              <span className="item-due"><i>{item.dueDate}, {item.dueTime}</i></span>
+              <span 
+                className="item-due"
+                onClick={() => setIsPopupOpen(true)}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}>
+                  <i>{item.dueDate}, {item.dueTime}
+                  </i>
+              </span>
             )}
           </>
         )}
@@ -147,6 +172,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           </>
         )}
       </div>
+      <TaskPopup isOpen={isPopupOpen} onClose={closeModal} item={item} />
     </li>
   );
 };

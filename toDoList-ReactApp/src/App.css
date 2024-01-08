@@ -169,3 +169,16 @@
   color: #1a1a1a;
 }
 
+.low-priority .fc-daygrid-event-dot {
+  border-color: green;
+}
+
+.medium-priority .fc-daygrid-event-dot {
+  border-color: orange;
+}
+
+.high-priority .fc-daygrid-event-dot{
+  border-color: red;
+}
+
+

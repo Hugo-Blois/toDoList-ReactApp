@@ -170,14 +170,29 @@ function filterTasks(items: ListItem[]): ListItem[] {
     return filteredItems;
   }
 
+  function getPriorityClass(priority: TaskPriority): string {
+    switch (priority) {
+      case 'low':
+        return 'low-priority';
+      case 'medium':
+        return 'medium-priority';
+      case 'high':
+        return 'high-priority';
+      default:
+        return '';
+    }
+  }  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function mapTasksToEvents(tasks: ListItem[]): any[] {
     return tasks.map((task) => ({
       title: task.title,
       start: `${task.dueDate}T${task.dueTime}`,
-      allDay: false
+      allDay: false,
+      className: getPriorityClass(task.priority), // Ajoutez cette ligne
     }));
   }
+  
 
   function handleEventClick(clickInfo: EventClickArg) {
     const taskTitle = clickInfo.event.title;
@@ -216,11 +231,11 @@ return (
     <div className='navbar'>
       <h1>Todo List</h1>
       <div className="tabs">
-        <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
-          Calendar
-        </button>
         <button className={activeTab === 'tasks' ? 'active' : ''} onClick={() => setActiveTab('tasks')}>
           Tasks
+        </button>
+        <button className={activeTab === 'calendar' ? 'active' : ''} onClick={() => setActiveTab('calendar')}>
+          Calendar
         </button>
         <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>
           Statistics

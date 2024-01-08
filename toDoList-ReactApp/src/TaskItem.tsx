@@ -124,12 +124,18 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
           </>
         ) : (
           <>
+            <div>
+              {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
+              {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
+              {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
+            </div>
             <span 
-              className="item-title" 
+              className="item-title item-due" 
               style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}
               onClick={() => setIsPopupOpen(true)}
               onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}></span>
+              onMouseLeave={() => setIsHovered(false)}>
+              {item.title}</span>
             <span 
               className="item-content" 
               style={{ textDecoration: item.done ? 'line-through' : 'none' }}
@@ -138,13 +144,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
               onMouseLeave={() => setIsHovered(false)}>
               {item.content}
             </span>
-            <div>
-              {item.priority === 'high' && <FontAwesomeIcon icon={faCircle} style={{ color: 'red', fontSize: '1em' }} />}
-              {item.priority === 'medium' && <FontAwesomeIcon icon={faCircle} style={{ color: 'orange', fontSize: '1em' }} />}
-              {item.priority === 'low' && <FontAwesomeIcon icon={faCircle} style={{ color: 'green', fontSize: '1em' }} />}
-            </div>
-            <span className="item-title item-due" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
-              {item.title}
+
+            <span className="item-title" style={{ marginRight: '20px', textDecoration: item.done ? 'line-through' : 'none' }}>
             </span>
 
             {item.dueDate && item.dueTime &&(

@@ -48,7 +48,7 @@ const TaskPopup: React.FC<TaskPopupProps> = ({ isOpen, onClose, item }) => {
    <p>{item.title}</p>
    <p>{item.content}</p>
    <p>{item.dueDate}</p>
-   <p>{item.priority}</p>
+   <p>{item.priority} priority</p>
    <button onClick={onClose}>
      <FontAwesomeIcon icon={faTimes} />
    </button>

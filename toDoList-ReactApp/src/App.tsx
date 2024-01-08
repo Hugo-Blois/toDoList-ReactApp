@@ -216,14 +216,15 @@ function filterTasks(items: ListItem[]): ListItem[] {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderPriorityButton = (priority: TaskPriority, label: string, icon: any) => (
-    <button
-      key={priority}
-      className={selectedPriority === priority ? 'active' : ''}
-      onClick={() => filterByPriority(selectedPriority === priority ? null : priority)}
-    >
-      {label}
-      <FontAwesomeIcon icon={icon} />
-    </button>
+  <button
+    key={priority}
+    className={`priority-button ${selectedPriority === priority ? 'active' : ''}`}
+    onClick={() => filterByPriority(selectedPriority === priority ? null : priority)}
+  >
+    {label}&nbsp;&nbsp;&nbsp;
+    <FontAwesomeIcon icon={icon} />
+  </button>
+
   );
   
 return (

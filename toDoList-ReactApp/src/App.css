@@ -67,6 +67,9 @@
   height: 30px;
 }
 
+.search-bar{
+  display: flex;
+}
 .search-bar input{
   padding: 10px;
   border: none;
@@ -150,6 +153,13 @@
 
 .label-select-container select {
   flex: 1; 
+}
+
+/*  Priority word key search bar CSS  */
+
+.priority-button.active {
+  background-color: #007bff; 
+  color: #fff; 
 }
 
 

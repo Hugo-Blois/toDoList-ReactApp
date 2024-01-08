@@ -50,6 +50,7 @@ function App() {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
 
+
   const modalStyles: Styles = {
     content: {
       top: '50%',
@@ -183,6 +184,15 @@ function filterTasks(items: ListItem[]): ListItem[] {
     }
   }  
 
+  function scrollToForm() {
+    const scrollToY = window.innerHeight;
+  
+    window.scrollTo({
+      top: scrollToY,
+      behavior: 'smooth',
+    });
+  }
+
 
   function mapTasksToEvents(tasks: ListItem[]): any[] {
   return tasks.map((task) => {
@@ -224,6 +234,8 @@ function filterTasks(items: ListItem[]): ListItem[] {
     } else {
       setSelectedTask(null);
     }
+    
+    scrollToForm();
   }
 
   function filterByPriority(priority: TaskPriority | null) {
@@ -390,7 +402,7 @@ return (
                 </div>
                 :
                 <div className='add-task'>
-                  <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
+                  <Button label='Add a task' onClick={() => { setAddTask(true); scrollToForm(); }} children={undefined} />
                 </div>
             }
   </div>

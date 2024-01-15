@@ -3,7 +3,7 @@ import List from './List';
 import Button from './Button';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
 import FullCalendar from '@fullcalendar/react';
@@ -71,10 +71,6 @@ function App() {
     setConfirmDelete(false);
   };
 
-  const closeModalInfo = () => {
-    setShowInfo(false);
-  };
-
   useEffect(() => {
     localStorage.setItem('itemList', JSON.stringify(itemList));
   }, [itemList]);
@@ -123,10 +119,6 @@ function App() {
   function deleteTache(id: number) {
     setTaskToDeleteId(id);
     setConfirmDelete(true);
-  }
-
-  function showInfoImput() {
-    setShowInfo(true);
   }
 
   function confirmDeleteTask() {

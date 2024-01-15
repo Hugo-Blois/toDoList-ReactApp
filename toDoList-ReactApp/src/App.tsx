@@ -15,6 +15,7 @@ import {
 } from "@fullcalendar/core";
 import Modal, { Styles } from 'react-modal';
 import Stats from './Stats';
+import InfoPopUp from './InfoPopUp';
 
 Modal.setAppElement('#root');
 
@@ -50,6 +51,7 @@ function App() {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
   const [showInfo, setShowInfo] = useState<boolean>(false);
+  const exampleJson = `[{"id":10,"title":"laver","content":"faire machine à laver","done":false,"dueDate":"2024-01-17","dueTime":"14:00","priority":"high"},{"id":11,"title":"bien","content":"joué","done":true,"dueDate":"2024-01-26","dueTime":"16:05","priority":"medium"}]`;
 
   const modalStyles: Styles = {
     content: {
@@ -324,23 +326,9 @@ return (
           onChange={handleImportFileChange}
           style={{ display: 'none' }}
         />
-        <button onClick={showInfoImput}>
-            <FontAwesomeIcon icon={faCircleInfo} />
-        </button>
-        <Modal
-          isOpen={showInfo}
-          onRequestClose={closeModalInfo}
-          style={modalStyles}
-          contentLabel="Information about import json file"
-        >
-          <p>Information about import</p>
-          <p>Only JSON files accepted</p>
-          <p>Content example :</p>
-          <p>{ '[{"id":10,"title":"laver","content":"faire  machine à laver","done":false,"dueDate":"2024-01-17","dueTime":"14:00","priority":"high"},{"id":11,"title":"bien","content":"joué","done":true,"dueDate":"2024-01-26","dueTime":"16:05","priority":"medium"}] '}</p>
-          <div>
-            <Button label="Cancel" onClick={closeModalInfo} children={undefined} />
-          </div>
-        </Modal>
+        <Button label="Show JSON Info" onClick={() => setShowInfo(true)} children={undefined} />
+
+        <InfoPopUp isOpen={showInfo} onRequestClose={() => setShowInfo(false)} jsonContent={exampleJson} />
       </div>  
     </div>
 

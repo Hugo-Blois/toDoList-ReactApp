@@ -161,7 +161,7 @@ function filterTasks(items: ListItem[]): ListItem[] {
     if (selectedPriority) {
       const options = {
         keys: ['priority'],
-        threshold: 1,
+        threshold: 0.3,
       };
   
       const fuse = new Fuse(filteredItems, options);
@@ -330,6 +330,7 @@ return (
           <h2>Tasks</h2>
           <button onClick={() => {
             setSearchTerm(""); 
+            setSelectedPriority(null);
             setShowSearch(!showSearch); 
           }}>
             <FontAwesomeIcon icon={faSearch} />

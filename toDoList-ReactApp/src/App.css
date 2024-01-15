@@ -155,8 +155,28 @@
   flex: 1; 
 }
 
-/*  Priority word key search bar CSS  */
+/* Style de base du label */
+.import-label {
+    display: inline-block;
+    background-color: #0074d9; 
+    color: #fff; 
+    padding: 10px 20px;
+    margin: 10px 10px 10px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    border-radius: 8px;
+    height: 20px;
+    padding-top: 0.5em;
+    padding-bottom: 0.7em;
+    padding-left: 3.2em;
+    padding-right: 3.2em;
+  }
+.import-label:hover {
+    background-color: #0056b3; 
+}
 
+
+/*  Priority word key search bar CSS  */
 .priority-button.active {
   background-color: #007bff; 
   color: #fff; 

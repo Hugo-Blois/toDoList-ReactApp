@@ -74,11 +74,11 @@ function App() {
 
   function onChangeTache(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
-    if(text != '') setTache(text);
+    setTache(text);
   }
   function onChangeDescription(e: React.ChangeEvent<HTMLInputElement>){
     const text = String(e.currentTarget.value);
-    if(text != '') setDescription(text);
+    setDescription(text);
   }
   function onChangeDueDate(e: React.ChangeEvent<HTMLInputElement>){
     const date = e.currentTarget.value;
@@ -106,7 +106,9 @@ function App() {
       setAddTask(false);
       setPriority('low')
       setItemList(newItemList);
+      scrollToTopWithDelay();
     }else {
+      scrollToDownSide();
       setError("Fields cannot be empty");
     }
   }
@@ -183,7 +185,26 @@ function filterTasks(items: ListItem[]): ListItem[] {
     }
   }  
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function scrollToDownSide() {
+    const scrollToY = window.innerHeight;
+  
+    window.scrollTo({
+      top: scrollToY,
+      behavior: 'smooth',
+    });
+  }
+
+  function scrollToTopWithDelay() {
+    setTimeout(function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }, 10); 
+  }
+  
+
+
   function mapTasksToEvents(tasks: ListItem[]): any[] {
     return tasks.map((task) => ({
       title: task.title,
@@ -208,6 +229,8 @@ function filterTasks(items: ListItem[]): ListItem[] {
     } else {
       setSelectedTask(null);
     }
+    
+    scrollToDownSide();
   }
 
   function filterByPriority(priority: TaskPriority | null) {
@@ -421,12 +444,13 @@ return (
                             setDueDate("");
                             setError(null);
                             setPriority("low");
+                            scrollToTopWithDelay();
                           } } children={undefined} />
                     </div>
                 </div>
                 :
                 <div className='add-task'>
-                  <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
+                  <Button label='Add a task' onClick={() => { setAddTask(true); scrollToDownSide(); }} children={undefined} />
                 </div>
             }
   </div>

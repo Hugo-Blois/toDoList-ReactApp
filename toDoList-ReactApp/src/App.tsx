@@ -50,7 +50,6 @@ function App() {
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
 
-
   const modalStyles: Styles = {
     content: {
       top: '50%',
@@ -184,40 +183,15 @@ function filterTasks(items: ListItem[]): ListItem[] {
     }
   }  
 
-  function scrollToForm() {
-    const scrollToY = window.innerHeight;
-  
-    window.scrollTo({
-      top: scrollToY,
-      behavior: 'smooth',
-    });
-  }
-
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function mapTasksToEvents(tasks: ListItem[]): any[] {
-  return tasks.map((task) => {
-    const eventClass = getPriorityClass(task.priority); // Classe de priorité
-
-    if (task.done) {
-      // Ajoutez la classe de style pour les tâches complétées
-      return {
-        title: task.title,
-        start: `${task.dueDate}T${task.dueTime}`,
-        allDay: false,
-        className: `${eventClass} completed-task`, // Ajoutez cette ligne
-      };
-    }
-
-    // Pour les tâches non complétées, utilisez la classe normale
-    return {
+    return tasks.map((task) => ({
       title: task.title,
       start: `${task.dueDate}T${task.dueTime}`,
       allDay: false,
-      className: eventClass, // Ajoutez cette ligne
-    };
-  });
-}
-
+      className: getPriorityClass(task.priority), // Ajoutez cette ligne
+    }));
+  }
   
 
   function handleEventClick(clickInfo: EventClickArg) {
@@ -234,8 +208,6 @@ function filterTasks(items: ListItem[]): ListItem[] {
     } else {
       setSelectedTask(null);
     }
-    
-    scrollToForm();
   }
 
   function filterByPriority(priority: TaskPriority | null) {
@@ -254,6 +226,46 @@ function filterTasks(items: ListItem[]): ListItem[] {
   </button>
 
   );
+
+  const exportTasks = () => {
+    const exportedData = JSON.stringify(itemList);
+    const blob = new Blob([exportedData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tasks.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const importTasks = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const importedTasks = JSON.parse(event.target?.result as string);
+        const uniqueImportedTasks = importedTasks.filter((importedTask: ListItem) => {
+          return !itemList.some((existingTask: ListItem) => existingTask.id === importedTask.id);
+        });
+        setItemList((prevItemList) => [...prevItemList, ...uniqueImportedTasks]);
+      } catch (error) {
+        console.error('Error parsing JSON file:', error);
+      }
+    };
+  
+    reader.readAsText(file);
+  };
+  
+
+  const handleImportFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    console.log("1")
+    if (file) {
+      console.log("2")
+      importTasks(file);
+    }
+  };
   
 return (
   <div className="App">
@@ -269,6 +281,17 @@ return (
         <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>
           Statistics
         </button>
+        <Button label="Export" onClick={exportTasks} children={undefined} />
+        <label htmlFor="import-file" className="import-label">
+          Import
+        </label>
+        <input
+          type="file"
+          id="import-file"
+          accept=".json"
+          onChange={handleImportFileChange}
+          style={{ display: 'none' }}
+        />
       </div>  
     </div>
 
@@ -403,7 +426,7 @@ return (
                 </div>
                 :
                 <div className='add-task'>
-                  <Button label='Add a task' onClick={() => { setAddTask(true); scrollToForm(); }} children={undefined} />
+                  <Button label='Add a task' onClick={() => setAddTask(true)} children={undefined}/>
                 </div>
             }
   </div>

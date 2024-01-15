@@ -3,7 +3,7 @@ import List from './List';
 import Button from './Button';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import 'react-calendar/dist/Calendar.css';
 import Fuse from 'fuse.js'
 import FullCalendar from '@fullcalendar/react';
@@ -49,6 +49,7 @@ function App() {
   const [selectedPriority, setSelectedPriority] = useState<TaskPriority | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [taskToDeleteId, setTaskToDeleteId] = useState<number | null>(null);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   const modalStyles: Styles = {
     content: {
@@ -66,6 +67,10 @@ function App() {
   const closeModal = () => {
     setTaskToDeleteId(null);
     setConfirmDelete(false);
+  };
+
+  const closeModalInfo = () => {
+    setShowInfo(false);
   };
 
   useEffect(() => {
@@ -116,6 +121,10 @@ function App() {
   function deleteTache(id: number) {
     setTaskToDeleteId(id);
     setConfirmDelete(true);
+  }
+
+  function showInfoImput() {
+    setShowInfo(true);
   }
 
   function confirmDeleteTask() {
@@ -315,6 +324,23 @@ return (
           onChange={handleImportFileChange}
           style={{ display: 'none' }}
         />
+        <button onClick={showInfoImput}>
+            <FontAwesomeIcon icon={faCircleInfo} />
+        </button>
+        <Modal
+          isOpen={showInfo}
+          onRequestClose={closeModalInfo}
+          style={modalStyles}
+          contentLabel="Information about import json file"
+        >
+          <p>Information about import</p>
+          <p>Only JSON files accepted</p>
+          <p>Content example :</p>
+          <p>{ '[{"id":10,"title":"laver","content":"faire  machine à laver","done":false,"dueDate":"2024-01-17","dueTime":"14:00","priority":"high"},{"id":11,"title":"bien","content":"joué","done":true,"dueDate":"2024-01-26","dueTime":"16:05","priority":"medium"}] '}</p>
+          <div>
+            <Button label="Cancel" onClick={closeModalInfo} children={undefined} />
+          </div>
+        </Modal>
       </div>  
     </div>
 

@@ -16,17 +16,4 @@ const Button: React.FC<ButtonProps> = (props: ButtonProps) => {
   );
 };
 
-//manière prof
-/*
-type Props = {
-  onClick?: () => void;
-} & PropsWithChildren;
-
-
-const ButtonProf: FunctionComponent<Props> = (props: Props) => {
-  return(
-    <button className='button' onClick={ props.onClick }>{props.children}</button>
-  )
-}*/
-
 export default Button;

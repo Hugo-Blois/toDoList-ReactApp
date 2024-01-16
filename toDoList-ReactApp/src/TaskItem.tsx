@@ -26,8 +26,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(item.title);
   const [editedContent, setEditedContent] = useState(item.content);
-  const [editedDueDate, setEditedDueDate] = useState(item.dueDate || '');
-  const [editedDueTime, setEditedDueTime] = useState(item.dueTime || '');
+  const [editedDueDate, setEditedDueDate] = useState(item.dueDate ?? '');
+  const [editedDueTime, setEditedDueTime] = useState(item.dueTime ?? '');
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [editedPriority, setEditPriority] = useState(item.priority);
@@ -41,8 +41,8 @@ const TaskItem: React.FC<TaskItemProps> = ({ item, onDelete, onToggleDone, onEdi
     setIsEditing(false);
     setEditedTitle(item.title);
     setEditedContent(item.content);
-    setEditedDueDate(item.dueDate || '');
-    setEditedDueTime(item.dueTime || '');
+    setEditedDueDate(item.dueDate ?? '');
+    setEditedDueTime(item.dueTime ?? '');
   };
 
   const handleSaveClick = () => {

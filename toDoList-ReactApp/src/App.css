@@ -37,7 +37,185 @@
   padding: 2em;
 }
 
+.navbar{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.tabs{
+  display: flex;
+  align-items: center;}
+
+.tabs button{
+  width: 150px;
+  margin: 50px 10px 50px 50px;
+}
+
+.navbartasks{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.navbartasks button{
+  margin: 10px 0px 0px 50px;
+  height: 50px;
+}
+.navbartasks input{
+  margin: 10px 0px 0px 50px;
+  height: 30px;
+}
+
+.search-bar{
+  display: flex;
+}
+.search-bar input{
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+}
 
 .read-the-docs {
   color: #888;
 }
+
+.add-task{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  transition: height 0.3s;
+}
+
+.task-section {
+  display: grid;
+  grid-template-columns: repeat(1fr, 1fr);
+  grid-gap: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+  grid-gap: 20px;
+  min-width: 1200px; /* Largeur minimale de la grille pour garantir au moins deux colonnes */
+}
+
+.grid-item {
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Ajout de médias queries pour ajuster la disposition en fonction de la largeur de l'écran */
+@media (max-width: 900px) {
+  .grid-item {
+    min-width: auto;
+    width: calc(100% - 40px); /* Ajustez la valeur en fonction de vos préférences */
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+    min-width: 0; /* Réinitialisez la largeur minimale de la grille pour permettre une colonne en plein écran */
+  }
+}
+
+.add-task{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  margin: 20px;
+  transition: height 0.3s;
+}
+
+.add-task input{
+  margin: 10px;
+  height: 30px;
+  width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+}
+
+/*  CSS du select priority  */
+
+.label-select-container {
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.label-select-container label {
+  margin-right: 30px; 
+}
+
+.label-select-container select {
+  flex: 1; 
+}
+
+/* Style de base du label */
+.import-label {
+    display: inline-block;
+    background-color: #0074d9; 
+    color: #fff; 
+    padding: 10px 20px;
+    margin: 10px 10px 10px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    border-radius: 8px;
+    height: 20px;
+    padding-top: 0.5em;
+    padding-bottom: 0.7em;
+    padding-left: 3.2em;
+    padding-right: 3.2em;
+  }
+.import-label:hover {
+    background-color: #0056b3; 
+}
+
+
+/*  Priority word key search bar CSS  */
+.priority-button.active {
+  background-color: #007bff; 
+  color: #fff; 
+}
+
+
+/* CSS du Calendrier */
+.fc-col-header-cell-cushion{
+  color: white;
+}
+.fc-daygrid-day-number{
+  color: white;
+}
+.fc-daygrid-dot-event{
+  color: white;
+}
+.fc-button-group button{
+  margin: 10px;
+  background-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
+.low-priority .fc-daygrid-event-dot {
+  border-color: green;
+}
+
+.medium-priority .fc-daygrid-event-dot {
+  border-color: orange;
+}
+
+.high-priority .fc-daygrid-event-dot{
+  border-color: red;
+}
+
+.completed-task {
+  text-decoration: line-through;
+  opacity: 0.6; 
+}
+.completed-task div{
+  text-decoration: line-through;
+}
+
